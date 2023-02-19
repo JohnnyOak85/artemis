@@ -20,10 +20,12 @@ const addQuirks = async (text: string) => {
     const quirkList = await Api.get<QuirkEntry[][]>('quirks');
     const quirks = quirkList[Gamble.randomIndex(quirkList.length)];
 
+    text = `${text} `;
+
     for (const { find, replace, type } of quirks) {
         switch (type) {
             case 'letter':
-                text = Word.replaceAll(text, find, replace);
+                text = Word.replaceAllCase(text, find, replace);
                 break;
             case 'suffix':
                 find.split(separator).forEach(word => {
@@ -42,7 +44,13 @@ const addQuirks = async (text: string) => {
                 });
                 break;
             default:
-                text = Word.replaceAll(text, addSpaces(find), addSpaces(replace));
+                const spacedFind = addSpaces(find);
+
+                text = Word.replaceAll(
+                    text,
+                    spacedFind,
+                    spacedFind.includes(' ') ? ` ${replace} ` : replace
+                );
                 break;
         }
     }
