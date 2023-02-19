@@ -1,0 +1,13 @@
+{
+    "name": "artemis-reminder",
+    "version": "1.5.0",
+    "description": "Artemis Reminder Module",
+    "scripts": {
+        "start": "ts-node app/index.ts"
+    },
+    "author": "JohnnyOak85",
+    "license": "ISC",
+    "dependencies": {
+        "commons": "file:../artemis-commons"
+    }
+}
