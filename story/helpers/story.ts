@@ -1,6 +1,6 @@
-import { Dictionary } from 'commons';
-import Discord from 'commons/discord';
-import { Api, Gamble, Quirk, Word } from 'commons/tools';
+import { Dictionary } from '../../commons';
+import Discord from '../../commons/discord';
+import { Api, Gamble, Quirk, Word } from '../../commons/tools';
 
 type Decorator = Dictionary<string[]>;
 

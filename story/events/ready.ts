@@ -1,5 +1,5 @@
-import Discord, { DiscordClient } from 'commons/discord';
-import { Environment, Schedule } from 'commons/tools';
+import Discord, { DiscordClient } from '../../commons/discord';
+import { Environment, Schedule } from '../../commons/tools';
 import story from '../helpers/story';
 
 export default {
