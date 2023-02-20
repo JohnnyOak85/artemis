@@ -35,7 +35,7 @@ const constructBlock = (block: string[], decorator: Decorator, protagonist: stri
 };
 
 export default async (name: string) => {
-    let title = 'Story of the Week';
+    let title = 'Story of the Week ';
     let value = '';
 
     const blocks = await getStoryBlocks();
