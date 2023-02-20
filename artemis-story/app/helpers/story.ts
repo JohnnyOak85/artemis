@@ -34,7 +34,7 @@ const constructBlock = (block: string[], decorator: Decorator, protagonist: stri
     return text;
 };
 
-export default async (protagonist: string) => {
+export default async (name: string) => {
     let title = 'Story of the Week';
     let value = '';
 
@@ -42,7 +42,7 @@ export default async (protagonist: string) => {
     const decorators = await getDecorators();
 
     for (const block of blocks) {
-        value += constructBlock(block, decorators, protagonist);
+        value += constructBlock(block, decorators, name);
     }
 
     if (Gamble.rollDice()) {
@@ -51,5 +51,5 @@ export default async (protagonist: string) => {
         value = valueAlt;
     }
 
-    return Discord.buildEmbed({ title, fields: { name: '', value } });
+    return Discord.buildEmbed({ title, fields: { name, value } });
 };
