@@ -1,5 +1,5 @@
-import Discord, { DiscordGuild, DiscordMember } from 'commons/discord';
-import { Api, Gamble, Schedule } from 'commons/tools';
+import Discord, { DiscordGuild, DiscordMember } from '../../commons/discord';
+import { Api, Gamble, Schedule } from '../../commons/tools';
 
 type ReminderConfig = {
     birthdays: string[];
