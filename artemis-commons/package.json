@@ -13,6 +13,7 @@
         "winston": "^3.8.2"
     },
     "devDependencies": {
+        "@tsconfig/node18": "^1.0.1",
         "@types/cron": "^2.0.0",
         "@types/node": "^18.13.0",
         "eslint-config-prettier": "^8.6.0",
