@@ -7,7 +7,8 @@ import {
     GuildMember,
     Interaction,
     Message,
-    RESTPostAPIChatInputApplicationCommandsJSONBody
+    RESTPostAPIChatInputApplicationCommandsJSONBody,
+    TextChannel
 } from 'discord.js';
 import buildCommand from './build-command';
 import buildEmbed from './build-embed';
@@ -18,6 +19,8 @@ import Intents from './intents';
 import registerCommand from './register-command';
 import start from './start';
 import getMember from './members';
+
+export class DiscordChannel extends TextChannel {}
 
 type EventKey = keyof ClientEvents;
 

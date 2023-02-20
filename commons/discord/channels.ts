@@ -1,7 +1,7 @@
-import { Guild } from 'discord.js';
+import { Guild, TextChannel } from 'discord.js';
 
-export default async ({ channels, systemChannel }: Guild, general: string) => {
-    const channel = await channels.fetch(general);
+export default async ({ channels, systemChannel }: Guild, channelId: string) => {
+    const channel = await channels.fetch(channelId);
 
-    return channel?.isTextBased() ? channel : systemChannel;
+    return channel instanceof TextChannel ? channel : systemChannel;
 };
