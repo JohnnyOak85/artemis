@@ -5,13 +5,13 @@ import { Api, Gamble, Log, Quirk } from '../../commons/tools';
 const getGreeting = async () => {
     const greetings = await Api.get<string[]>('greetings');
 
-    return greetings[Gamble.randomIndex(greetings.length)];
+    return greetings[Gamble.randomIndex(greetings)];
 };
 
 const getPrediction = async () => {
     const predictions = await Api.get<string[]>('predictions');
 
-    return predictions[Gamble.randomIndex(predictions.length)];
+    return predictions[Gamble.randomIndex(predictions)];
 };
 
 const getReaction = async (word: string) => {

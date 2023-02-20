@@ -8,7 +8,7 @@ const API_URL = 'story';
 const MAX_YEAR = 100;
 const MIN_YEAR = 2;
 
-const getDecoration = (decorator: string[]) => decorator[Gamble.randomIndex(decorator.length)];
+const getDecoration = (decorator: string[]) => decorator[Gamble.randomIndex(decorator)];
 const getDecorators = async () => await Api.get<Decorator>(`${API_URL}/decorators`);
 const getStoryBlocks = async () => await Api.get<string[][]>(`${API_URL}/blocks`);
 const getCost = () => {
@@ -17,7 +17,7 @@ const getCost = () => {
     return (Gamble.random() * power).toString();
 };
 
-const chooseText = (block: string[]) => block[Gamble.randomIndex(block.length)];
+const chooseText = (block: string[]) => block[Gamble.randomIndex(block)];
 const addSpace = (text: string) => (Word.startsWithAny(text, Word.PUNCTUATION) ? text : ` ${text}`);
 
 const constructBlock = (block: string[], decorator: Decorator, protagonist: string) => {
