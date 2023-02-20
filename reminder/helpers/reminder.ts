@@ -78,15 +78,15 @@ export default async ({ members, systemChannel }: DiscordGuild) => {
                         )
                     );
                     break;
+                case 'celebration':
+                    systemChannel?.send(Discord.buildEmbed(buildCelebrationEmbed(reminder)));
+                    break;
                 case 'release':
                     systemChannel?.send(Discord.buildEmbed(buildReleaseEmbed(reminder)));
 
                     reminder.done = true;
 
                     Api.put(API_URL, reminder);
-                    break;
-                case 'release':
-                    systemChannel?.send(Discord.buildEmbed(buildCelebrationEmbed(reminder)));
                     break;
             }
         };

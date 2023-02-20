@@ -5,5 +5,5 @@ export default {
     randomIndex: (length: number) => randomize(length, 1) - 1,
     rollDice: () => randomize(6, 1) === 3,
     roshambo: () => randomize(3, 1) === 2,
-    tossCoin: () => randomize(2, 0) === 0
+    tossCoin: () => randomize(1, 0) === 1
 };
