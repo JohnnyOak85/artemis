@@ -1,6 +1,6 @@
-import { Dictionary } from 'commons';
-import Discord, { DiscordMessage } from 'commons/discord';
-import { Api, Gamble, Log, Quirk } from 'commons/tools';
+import { Dictionary } from '../../commons';
+import Discord, { DiscordChannel, DiscordMessage } from '../../commons/discord';
+import { Api, Gamble, Log, Quirk } from '../../commons/tools';
 
 const getGreeting = async () => {
     const greetings = await Api.get<string[]>('greetings');
@@ -64,7 +64,10 @@ export const checkMessage = async (message: DiscordMessage) => {
 
                 if (!response) continue;
 
-                message.channel.send(response);
+                if (message.channel instanceof DiscordChannel) {
+                    message.channel.send(response);
+                }
+
                 responded = true;
             }
         }

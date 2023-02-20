@@ -1,4 +1,4 @@
-import Discord, { DiscordMessage } from 'commons/discord';
+import Discord, { DiscordMessage } from '../../commons/discord';
 import { checkMessage } from '../helpers/speech';
 
 export default {
