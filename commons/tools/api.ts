@@ -16,16 +16,22 @@ export default {
 
             return data as T;
         } catch (error) {
+            if (Axios.isAxiosError(error)) {
+                log.error(error.response?.data, `get/${url}`);
+                throw error.response?.data;
+            }
+
             log.error(error, `get/${url}`);
             throw error;
         }
     },
-    put: async <T>(url: string, data: T) => {
+    put: async <T>(url: string, payload?: T) => {
         try {
             const { api } = environment.get();
             const { put } = createClient(api);
+            const { data } = await put(url, payload);
 
-            await put(url, data);
+            return data;
         } catch (error) {
             log.error(error, `get/${url}`);
             throw error;
