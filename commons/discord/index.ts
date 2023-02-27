@@ -26,7 +26,7 @@ type EventKey = keyof ClientEvents;
 
 export type DiscordEvent = {
     name: EventKey;
-    execute: (...args: ClientEvents[EventKey]) => Promise<void>;
+    execute: (...args: ClientEvents[EventKey]) => Promise<void> | void;
 };
 
 export type DiscordClient = Client<true>;
