@@ -3,30 +3,37 @@ import { EmbedBuilder } from 'discord.js';
 type Embed = {
     color?: number | null;
     description?: string | null;
-    fields: { name: string; value: string };
+    fields?: { name: string; value: string } | null;
     image?: string | null;
     thumbnail?: string | null;
     title?: string | null;
     url?: string | null;
 };
 
-export default ({
+const buildEmbed = ({
     color = null,
     description = null,
-    fields,
+    fields = null,
     image = null,
     thumbnail = null,
     title = null,
     url = null
-}: Embed) => ({
-    embeds: [
-        new EmbedBuilder()
-            .setColor(color)
-            .setDescription(description)
-            .setFields(fields)
-            .setImage(image)
-            .setThumbnail(thumbnail)
-            .setTitle(title)
-            .setURL(url)
-    ]
+}: Embed) => {
+    const embed = new EmbedBuilder()
+        .setColor(color)
+        .setDescription(description)
+        .setImage(image)
+        .setThumbnail(thumbnail)
+        .setTitle(title)
+        .setURL(url);
+
+    if (fields) {
+        embed.setFields(fields);
+    }
+
+    return embed;
+};
+
+export default (embedData: Embed) => ({
+    embeds: [buildEmbed(embedData)]
 });
