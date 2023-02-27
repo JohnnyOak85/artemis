@@ -5,8 +5,10 @@ import paths from '../paths';
 export default {
     get: () => ({
         api: `${process.env.API_URL}/${process.env.API_SUFFIX}` || '',
+        game: process.env.GAME_CHANNEL || '',
         general: process.env.GENERAL_CHANNEL || '',
         guild: process.env.GUILD_ID || '',
+        monsterApi: process.env.MONSTER_API || '',
         token: process.env.TOKEN || ''
     }),
     start: () => {
