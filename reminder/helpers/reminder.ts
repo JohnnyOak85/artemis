@@ -29,7 +29,7 @@ async function buildBirthdayEmbed({ nickname, avatarURL, user: { username } }: D
         color: 0xffd700,
         fields: {
             name: '\u200B',
-            value: birthdays[(Gamble.random(birthdays.length), 0)].replace(
+            value: birthdays[Gamble.randomIndex(birthdays)].replace(
                 '§nickname',
                 nickname || username
             )
