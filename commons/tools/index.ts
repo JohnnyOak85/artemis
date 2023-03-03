@@ -3,7 +3,7 @@ import gamble from './gamble';
 import environment from './environment';
 import log from './log';
 import quirk from './quirk';
-import schedule from './schedule';
+import schedule, { ScheduleJob } from './schedule';
 import time from './time';
 import word from './word';
 
@@ -15,3 +15,5 @@ export const Quirk = quirk;
 export const Schedule = schedule;
 export const Word = word;
 export const Time = time;
+
+export type Job = ScheduleJob;

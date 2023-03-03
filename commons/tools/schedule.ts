@@ -11,7 +11,11 @@ const jobs = new Collector<CronJob>();
 const parseTimestamp = (timestamp: Timestamp) =>
     typeof timestamp === 'string' ? timestamp : new Date(timestamp);
 
+export type ScheduleJob = CronJob;
+
 export default {
+    getJob: (timestamp: Timestamp, callBack: Callback) =>
+        new CronJob(parseTimestamp(timestamp), callBack),
     generateTimestamp: () =>
         `${Gamble.random(59, 0)} ${Gamble.random(23, 0)} * * ${Gamble.random(6, 0)}`,
     run: (timestamp: Timestamp, callBack: Callback) =>
