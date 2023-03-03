@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { Agent } from 'https';
+import { Dictionary } from '..';
 import environment from './environment';
 import log from './log';
 
@@ -8,11 +9,11 @@ const httpsAgent = new Agent({ rejectUnauthorized: false });
 const createClient = (baseURL: string) => Axios.create({ baseURL, httpsAgent });
 
 export default {
-    get: async <T>(url: string) => {
+    get: async <T>(url: string, params?: Dictionary<string>) => {
         try {
             const { api } = environment.get();
             const { get } = createClient(api);
-            const { data } = await get(`/${url}`);
+            const { data } = await get(`/${url}`, { params });
 
             return data as T;
         } catch (error) {
