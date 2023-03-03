@@ -1,19 +1,20 @@
-import { Collector } from '../../../commons';
+import { Collector, VoidCallback } from '../../../commons';
 import { Job, Schedule } from '../../../commons/tools';
-
-type Callback = () => void;
 
 const store = new Collector<Job>();
 const key = 'job';
 
 export default {
-    start: (callback: Callback) => {
+    hasGame: () => store.has(key),
+    restart: () => {
+        store.get(key)?.start();
+    },
+    start: (callback: VoidCallback) => {
         const job = Schedule.getJob('* * * * *', callback);
         store.put(key, job);
         job.start();
     },
     stop: () => {
-        const job = store.get(key);
-        job?.stop();
+        store.get(key)?.stop();
     }
 };
