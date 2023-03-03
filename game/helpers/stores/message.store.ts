@@ -12,5 +12,8 @@ export default {
         const message = store.get(key);
 
         message?.delete();
+    },
+    deleteMessage: () => {
+        store.delete(key);
     }
 };
