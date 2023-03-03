@@ -1,9 +1,21 @@
-import Discord, { DiscordGuild } from '../../commons/discord';
+import Discord, { DiscordChannel, DiscordGuild } from '../../commons/discord';
 import { Environment, Log } from '../../commons/tools';
 import spawnMonster from './spawner';
-import jobStore from './stores/job.store';
+import gameStore from './stores/game.store';
 import messageStore from './stores/message.store';
 import toggleStore from './stores/toggle.store';
+
+const startGame = (channel: DiscordChannel) => {
+    if (gameStore.hasGame()) {
+        gameStore.restart();
+    } else {
+        gameStore.start(async () => {
+            messageStore.clearMessage();
+            const message = await channel.send(await spawnMonster());
+            messageStore.saveMessage(message);
+        });
+    }
+};
 
 export default async (guild: DiscordGuild | null) => {
     try {
@@ -21,15 +33,11 @@ export default async (guild: DiscordGuild | null) => {
         }
 
         if (isRunning) {
-            jobStore.stop();
+            gameStore.stop();
 
             reply = 'Ending the game';
         } else {
-            jobStore.start(async () => {
-                messageStore.clearMessage(); // TODO Only if not engaged
-                const message = await channel.send(await spawnMonster()); // TODO Only if no battle is on going
-                messageStore.saveMessage(message);
-            });
+            startGame(channel);
         }
 
         toggleStore.toggle();
