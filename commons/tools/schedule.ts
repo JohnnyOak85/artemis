@@ -1,8 +1,7 @@
 import { CronJob } from 'cron';
 import { Gamble } from '.';
-import { Collector } from '..';
+import { Collector, VoidCallback } from '..';
 
-type Callback = () => void;
 type Timestamp = number | string;
 
 const key = 'job';
@@ -14,13 +13,13 @@ const parseTimestamp = (timestamp: Timestamp) =>
 export type ScheduleJob = CronJob;
 
 export default {
-    getJob: (timestamp: Timestamp, callBack: Callback) =>
+    getJob: (timestamp: Timestamp, callBack: VoidCallback) =>
         new CronJob(parseTimestamp(timestamp), callBack),
     generateTimestamp: () =>
         `${Gamble.random(59, 0)} ${Gamble.random(23, 0)} * * ${Gamble.random(6, 0)}`,
-    run: (timestamp: Timestamp, callBack: Callback) =>
+    run: (timestamp: Timestamp, callBack: VoidCallback) =>
         new CronJob(parseTimestamp(timestamp), callBack).start(),
-    runOnce: (timestamp: Timestamp, callBack: Callback) => {
+    runOnce: (timestamp: Timestamp, callBack: VoidCallback) => {
         const job = new CronJob(parseTimestamp(timestamp), () => {
             callBack();
             job.stop();
@@ -28,7 +27,7 @@ export default {
 
         job.start();
     },
-    runTemp: (timestamp: Timestamp, callBack: Callback) => {
+    runTemp: (timestamp: Timestamp, callBack: VoidCallback) => {
         const job = new CronJob(parseTimestamp(timestamp), callBack);
         jobs.put(key, job);
         job.start();

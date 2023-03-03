@@ -1,6 +1,5 @@
 import { Api, Gamble, Word } from '.';
-
-type Callback = (entry: string) => string | void;
+import { StringCallback } from '..';
 
 type QuirkEntry = {
     find: string;
@@ -11,15 +10,15 @@ type QuirkEntry = {
 const separator = '|';
 const chance = 45;
 
-const iterateFind = (find: string, callback: Callback) => {
+const iterateFind = (find: string, callback: StringCallback) => {
     find.split(separator).forEach(callback);
 };
 
-const iteratePunctuation = (callback: Callback) => {
+const iteratePunctuation = (callback: StringCallback) => {
     Word.PUNCTUATION.forEach(callback);
 };
 
-const iterateText = (text: string, sep = separator, callback: Callback) =>
+const iterateText = (text: string, sep = separator, callback: StringCallback) =>
     text.split(sep).map(callback).join(sep);
 
 const addSpaces = (text: string) =>
