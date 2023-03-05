@@ -10,15 +10,14 @@ import {
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     TextChannel
 } from 'discord.js';
-import buildCommand from './build-command';
-import buildEmbed from './build-embed';
 import ChannelTypes from './channel-types';
-import getChannel from './channels';
-import getMember from './members';
-import getRoles from './roles';
+import channels from './channels';
+import commands from './commands';
+import embeds from './embeds';
 import Events from './events';
 import Intents from './intents';
-import registerCommand from './register-command';
+import members from './members';
+import roles from './roles';
 import start from './start';
 
 export class DiscordChannel extends TextChannel {}
@@ -43,11 +42,10 @@ export default {
     Events,
     ChannelTypes,
     Intents,
-    buildCommand,
-    buildEmbed,
-    getChannel,
-    getMember,
-    getRoles,
-    registerCommand,
+    ...channels,
+    ...commands,
+    ...embeds,
+    ...members,
+    ...roles,
     start
 };

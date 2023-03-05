@@ -34,6 +34,8 @@ const buildEmbed = ({
     return embed;
 };
 
-export default (embedData: Embed) => ({
-    embeds: [buildEmbed(embedData)]
-});
+export default {
+    buildEmbed: (embedData: Embed) => ({
+        embeds: [buildEmbed(embedData)]
+    })
+};
