@@ -12,9 +12,9 @@ export default {
         try {
             const { api } = environment.get();
             const { get } = createClient(api);
-            const { data } = await get(`/${url}`, { params });
+            const { data } = await get<T>(`/${url}`, { params });
 
-            return data as T;
+            return data;
         } catch (error) {
             throw error;
         }
@@ -23,7 +23,7 @@ export default {
         try {
             const { api } = environment.get();
             const { put } = createClient(api);
-            const { data } = await put(url, payload);
+            const { data } = await put<T>(url, payload);
 
             return data;
         } catch (error) {
