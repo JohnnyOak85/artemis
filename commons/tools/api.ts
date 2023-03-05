@@ -2,7 +2,6 @@ import Axios from 'axios';
 import { Agent } from 'https';
 import { Dictionary } from '..';
 import environment from './environment';
-import log from './log';
 
 const httpsAgent = new Agent({ rejectUnauthorized: false });
 
@@ -17,12 +16,6 @@ export default {
 
             return data as T;
         } catch (error) {
-            if (Axios.isAxiosError(error)) {
-                log.error(error.response?.data, `get/${url}`);
-                throw error.response?.data;
-            }
-
-            log.error(error, `get/${url}`);
             throw error;
         }
     },
@@ -34,7 +27,6 @@ export default {
 
             return data;
         } catch (error) {
-            log.error(error, `get/${url}`);
             throw error;
         }
     }
