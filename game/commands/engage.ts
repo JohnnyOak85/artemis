@@ -8,7 +8,7 @@ export default {
             return interaction.reply('I cannot oblige');
         }
 
-        const roles = Discord.getRoles(interaction.member);
+        const roles = Discord.getPlayerRoles(interaction.member);
 
         const player = {
             id: interaction.user.id,

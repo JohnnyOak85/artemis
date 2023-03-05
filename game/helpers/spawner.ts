@@ -1,5 +1,5 @@
 import { Dictionary } from '../../commons';
-import buildEmbed from '../../commons/discord/build-embed';
+import Discord from '../../commons/discord';
 import { Api, Environment, Gamble, Log } from '../../commons/tools';
 import monsterStore from './stores//monster.store';
 import stats from './stats';
@@ -8,7 +8,6 @@ type Area = Dictionary<string>[];
 
 type RankData = {
     chance: number;
-    class: string;
     color: string;
     index: number;
     title: string;
@@ -35,7 +34,7 @@ const getRankInfo = async () => {
 
 const getMonsterInfo = async (rank: number) => {
     try {
-        const area = await getData<Area>('area-data');
+        const area = await getData<Area>('area/data');
         const rankMonsters = area[rank];
         const monsterList = Object.keys(rankMonsters);
         const monster = monsterList[Gamble.randomIndex(monsterList)];
@@ -76,11 +75,12 @@ export default async () => {
             description,
             health,
             id,
+            index,
             level,
             luck
         });
 
-        return buildEmbed({
+        return Discord.buildEmbed({
             color: Number(color),
             description: `A level ${level} ${description} appears!`,
             thumbnail: `${monsterApi}/${id}.png`,

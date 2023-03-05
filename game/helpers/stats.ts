@@ -1,5 +1,22 @@
 import { Api, Gamble } from '../../commons/tools';
 
+type AttributeStats = {
+    max: number;
+    maxGain: number;
+};
+
+type BaseStats = {
+    attack: number;
+    defense: number;
+    health: number;
+};
+
+type BattleStats = {
+    damageControl: number;
+    doubleChance: number;
+    missChance: number;
+};
+
 type HealthStats = {
     base: number;
     cap: number;
@@ -13,6 +30,7 @@ type LevelStats = {
     minDecrement: number;
     max: number;
     maxMultiplier: number;
+    multiplier: number;
 };
 
 type LuckStats = {
@@ -31,10 +49,10 @@ type MainStats = {
     minIncrement: 5;
 };
 
-type BaseStats = {
-    attack: number;
-    defense: number;
-    health: number;
+type StatCaps = {
+    healthCap: number;
+    luckCap: number;
+    statCap: number;
 };
 
 const divide = (dividend: number, divisor = 2) => dividend / divisor;
@@ -85,5 +103,11 @@ export default {
             defense: roundDown(statMin + median)
         };
     },
-    getPlayerBaseStats: async () => getStats<BaseStats>('base')
+    getAttributeStats: () => getStats<AttributeStats>('attributes'),
+    getBattleStats: () => getStats<BattleStats>('battle'),
+    getHealthStats: () => getStats<HealthStats>('health'),
+    getLevelStats: () => getStats<LevelStats>('level'),
+    getLuckStats: () => getStats<LuckStats>('luck'),
+    getStatCaps: () => getStats<StatCaps>('caps'),
+    getPlayerBaseStats: () => getStats<BaseStats>('base')
 };

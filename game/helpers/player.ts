@@ -1,8 +1,9 @@
 import { Dictionary } from '../../commons';
 import { Api, Gamble } from '../../commons/tools';
 import stats from './stats';
+import { Battler } from './stores/fighter.store';
 
-type Player = {
+interface PlayerDoc {
     achievements: string[];
     attributes: Dictionary<number>;
     attack: number;
@@ -16,7 +17,9 @@ type Player = {
     name: string;
     rank: string;
     wins: number;
-};
+}
+
+export interface Player extends Battler, PlayerDoc {}
 
 export type PlayerData = {
     id: string;
@@ -26,15 +29,17 @@ export type PlayerData = {
 
 type PlayerRanks = Dictionary<string>;
 
+const URL = 'game/player';
+
 const getPlayerRank = async (titles: string[]) => {
-    const ranks = await Api.get<PlayerRanks>('game/player/ranks');
+    const ranks = await Api.get<PlayerRanks>(`${URL}/ranks`);
     const playerRanks = titles.filter(title => !!ranks[title]);
 
     return playerRanks[Gamble.randomIndex(playerRanks)];
 };
 
-export const getPlayer = async ({ id, name, titles }: PlayerData) => {
-    const player = await Api.get<Player>(`game/player`, { player: id });
+export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Player> => {
+    const player = await Api.get<PlayerDoc>(URL, { player: id });
     const { attack, defense, health } = await stats.getPlayerBaseStats();
 
     return {
@@ -54,3 +59,6 @@ export const getPlayer = async ({ id, name, titles }: PlayerData) => {
         wins: player?.wins || 0
     };
 };
+
+export const savePlayer = async ({ boost, damage, id, originalHealth, type, ...player }: Player) =>
+    Api.put<PlayerDoc>(URL, player);
