@@ -12,9 +12,20 @@ type CommandData = {
     token: string;
 };
 
+type CommandInfo = {
+    description: string;
+    dmPermission: boolean;
+    memberPermissions?: bigint;
+    name: string;
+};
+
 export default {
-    buildCommand: (name: string, description: string) =>
-        new SlashCommandBuilder().setName(name).setDescription(description),
+    buildCommand: ({ description, dmPermission, memberPermissions, name }: CommandInfo) =>
+        new SlashCommandBuilder()
+            .setName(name)
+            .setDescription(description)
+            .setDMPermission(dmPermission)
+            .setDefaultMemberPermissions(memberPermissions),
     registerCommand: ({ body, clientId, guildId, token }: CommandData) =>
         new REST({ version: '10' })
             .setToken(token)

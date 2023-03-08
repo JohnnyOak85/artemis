@@ -4,6 +4,7 @@ type Embed = {
     color?: number | null;
     description?: string | null;
     fields?: { name: string; value: string } | null;
+    footer?: { text: string } | null;
     image?: string | null;
     thumbnail?: string | null;
     title?: string | null;
@@ -14,6 +15,7 @@ const buildEmbed = ({
     color = null,
     description = null,
     fields = null,
+    footer = null,
     image = null,
     thumbnail = null,
     title = null,
@@ -22,6 +24,7 @@ const buildEmbed = ({
     const embed = new EmbedBuilder()
         .setColor(color)
         .setDescription(description)
+        .setFooter(footer)
         .setImage(image)
         .setThumbnail(thumbnail)
         .setTitle(title)
@@ -37,5 +40,6 @@ const buildEmbed = ({
 export default {
     buildEmbed: (embedData: Embed) => ({
         embeds: [buildEmbed(embedData)]
-    })
+    }),
+    buildEmbedData: (embedData: Embed) => [buildEmbed(embedData)]
 };
