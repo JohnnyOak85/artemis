@@ -10,7 +10,7 @@ export default {
         Schedule.run(Schedule.WEEK_START, () => {
             Schedule.runOnce(Schedule.generateTimestamp(), async () => {
                 const guild = await guilds.fetch(guildId);
-                const member = await Discord.getMember(guild);
+                const member = await Discord.getRandomMember(guild);
                 const channel = await Discord.getChannel(guild, general);
 
                 channel?.send(await story(member));
