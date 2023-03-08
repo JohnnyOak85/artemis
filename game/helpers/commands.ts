@@ -1,5 +1,6 @@
 import { Collector } from '../../commons';
 import Discord, { DiscordCommandBody, DiscordCommandInteraction } from '../../commons/discord';
+import { Log } from '../../commons/tools';
 import commands from '../commands';
 
 interface Command {
@@ -19,7 +20,8 @@ export const registerCommands = async (token: string, clientId: string, guildId:
 
         Discord.registerCommand({ body, clientId, guildId, token });
     } catch (error) {
-        console.log('registerCommands',error);
+        Log.error(error, 'registerCommands');
+        throw error;
     }
 };
 

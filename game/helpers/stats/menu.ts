@@ -22,43 +22,27 @@ const getPlayerData = async ({ guild, member, user }: DiscordCommandInteraction)
     };
 };
 
-const buildAchievementsMenu = async (interaction: DiscordCommandInteraction) => {
-    try {
-        return {
-            components: Discord.buildButtonRow([buttons.stats(), buttons.bestiary()]),
-            embeds: embeds.achievements(await getPlayerData(interaction))
-        };
-    } catch (error) {
-        throw error;
-    }
-};
+const buildAchievementsMenu = async (interaction: DiscordCommandInteraction) => ({
+    components: Discord.buildButtonRow([buttons.stats(), buttons.bestiary()]),
+    embeds: embeds.achievements(await getPlayerData(interaction))
+});
 
 const buildBestiaryMenu = async (interaction: DiscordCommandInteraction) => {
-    try {
-        const monsterList = await Api.get<string[]>('game/area/list');
+    const monsterList = await Api.get<string[]>('game/area/list');
 
-        return {
-            components: Discord.buildButtonRow([buttons.stats(), buttons.achievements()]),
-            embeds: embeds.bestiary({
-                ...(await getPlayerData(interaction)),
-                monsterList
-            })
-        };
-    } catch (error) {
-        throw error;
-    }
+    return {
+        components: Discord.buildButtonRow([buttons.stats(), buttons.achievements()]),
+        embeds: embeds.bestiary({
+            ...(await getPlayerData(interaction)),
+            monsterList
+        })
+    };
 };
 
-const buildStatsMenu = async (interaction: DiscordCommandInteraction) => {
-    try {
-        return {
-            components: Discord.buildButtonRow([buttons.bestiary(), buttons.achievements()]),
-            embeds: embeds.stats(await getPlayerData(interaction))
-        };
-    } catch (error) {
-        throw error;
-    }
-};
+const buildStatsMenu = async (interaction: DiscordCommandInteraction) => ({
+    components: Discord.buildButtonRow([buttons.bestiary(), buttons.achievements()]),
+    embeds: embeds.stats(await getPlayerData(interaction))
+});
 
 export const buildMenu = (interaction: DiscordCommandInteraction, menu?: string) => {
     try {

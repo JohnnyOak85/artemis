@@ -6,13 +6,22 @@ export default {
     name: Discord.Events.interaction,
     execute: async (interaction: DiscordInteraction) => {
         if (interaction.isButton()) {
-            await interaction.deferUpdate();
+            try {
+                await interaction.deferUpdate();
 
-            const reply = await buildMenu(interaction, interaction.customId);
+                const reply = await buildMenu(interaction, interaction.customId);
 
-            await interaction.editReply(reply);
+                await interaction.editReply(reply);
 
-            return;
+                return;
+            } catch (error) {
+                interaction.reply({
+                    content: 'There was an error while executing this command!',
+                    ephemeral: true
+                });
+
+                throw error;
+            }
         }
 
         if (!interaction.isChatInputCommand()) return;
@@ -35,6 +44,8 @@ export default {
                 content: 'There was an error while executing this command!',
                 ephemeral: true
             });
+
+            throw error;
         }
     }
 };

@@ -5,10 +5,14 @@ import { registerCommands } from '../helpers/commands';
 export default {
     name: Discord.Events.ready,
     execute: async ({ token, user }: DiscordClient) => {
-        const { guild } = Environment.get();
+        try {
+            const { guild } = Environment.get();
 
-        await registerCommands(token, user.id, guild);
+            await registerCommands(token, user.id, guild);
 
-        console.log('ready');
+            console.log('ready');
+        } catch (error) {
+            console.log(error);
+        }
     }
 };
