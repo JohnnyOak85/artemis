@@ -60,5 +60,7 @@ export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Playe
     };
 };
 
+export const getPlayers = async () => Api.get<PlayerDoc[]>('game/players');
+
 export const savePlayer = async ({ boost, damage, id, originalHealth, type, ...player }: Player) =>
     Api.put<PlayerDoc>(URL, player);

@@ -1,14 +1,12 @@
 import { TextChannel } from 'discord.js';
 import { Dictionary } from '../../commons';
-import { Api, Calculator, Gamble } from '../../commons/tools';
+import { Api, Calculator, Gamble, Word } from '../../commons/tools';
 import { checkBoss, checkMonster, checkStats } from './achievements';
 import battleCalculator from './battle.calculator';
 import { levelUp, rankUp } from './level-up';
 import { Player } from './player';
 import stats from './stats';
 import { Monster } from './stores/monster.store';
-
-const buildList = (list: string[]) => list.filter(x => x).join('\n');
 
 const boostStats = async (player: Player, monsterLevel: number, reply: string[]) => {
     const { statCap } = await stats.getStatCaps();
@@ -96,5 +94,5 @@ export default async (player: Player, monster: Monster, channel: TextChannel) =>
 
     await boostAttributes(reply);
 
-    channel.send(buildList(reply));
+    channel.send(Word.buildList(reply));
 };
