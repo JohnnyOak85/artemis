@@ -1,5 +1,4 @@
 import Discord, { DiscordInteraction } from '../../commons/discord';
-import { getCommand } from '../helpers/commands';
 import { buildMenu } from '../helpers/stats/menu';
 
 export default {
@@ -26,7 +25,7 @@ export default {
 
         if (!interaction.isChatInputCommand()) return;
 
-        const command = getCommand(interaction.commandName);
+        const command = Discord.getCommand(interaction.commandName);
 
         try {
             if (!command) {

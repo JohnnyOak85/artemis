@@ -1,6 +1,6 @@
 import Discord, { DiscordClient } from '../../commons/discord';
 import { Environment } from '../../commons/tools';
-import { registerCommands } from '../helpers/commands';
+import commands from '../commands';
 
 export default {
     name: Discord.Events.ready,
@@ -8,7 +8,7 @@ export default {
         try {
             const { guild } = Environment.get();
 
-            await registerCommands(token, user.id, guild);
+            await Discord.registerCommands(token, user.id, guild, commands);
 
             console.log('ready');
         } catch (error) {
