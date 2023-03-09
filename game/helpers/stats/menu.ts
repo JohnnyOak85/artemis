@@ -1,10 +1,16 @@
-import Discord, { DiscordCommandInteraction } from '../../../commons/discord';
+import Discord, { DiscordGuild, DiscordMember, DiscordUser } from '../../../commons/discord';
 import { Api, Log } from '../../../commons/tools';
 import { getPlayer } from '../player';
 import buttons from './buttons';
 import embeds from './embeds';
 
-const getPlayerData = async ({ guild, member, user }: DiscordCommandInteraction) => {
+type PlayerData = {
+    guild: DiscordGuild | null;
+    member: DiscordMember | null;
+    user: DiscordUser;
+};
+
+const getPlayerData = async ({ guild, member, user }: PlayerData) => {
     const roles = Discord.getPlayerRoles(member);
 
     const player = await getPlayer({
@@ -22,37 +28,37 @@ const getPlayerData = async ({ guild, member, user }: DiscordCommandInteraction)
     };
 };
 
-const buildAchievementsMenu = async (interaction: DiscordCommandInteraction) => ({
+const buildAchievementsMenu = async (playerData: PlayerData) => ({
     components: Discord.buildButtonRow([buttons.stats(), buttons.bestiary()]),
-    embeds: embeds.achievements(await getPlayerData(interaction))
+    embeds: embeds.achievements(await getPlayerData(playerData))
 });
 
-const buildBestiaryMenu = async (interaction: DiscordCommandInteraction) => {
+const buildBestiaryMenu = async (playerData: PlayerData) => {
     const monsterList = await Api.get<string[]>('game/area/list');
 
     return {
         components: Discord.buildButtonRow([buttons.stats(), buttons.achievements()]),
         embeds: embeds.bestiary({
-            ...(await getPlayerData(interaction)),
+            ...(await getPlayerData(playerData)),
             monsterList
         })
     };
 };
 
-const buildStatsMenu = async (interaction: DiscordCommandInteraction) => ({
+const buildStatsMenu = async (playerData: PlayerData) => ({
     components: Discord.buildButtonRow([buttons.bestiary(), buttons.achievements()]),
-    embeds: embeds.stats(await getPlayerData(interaction))
+    embeds: embeds.stats(await getPlayerData(playerData))
 });
 
-export const buildMenu = (interaction: DiscordCommandInteraction, menu?: string) => {
+export const buildMenu = (playerData: PlayerData, menu?: string) => {
     try {
         switch (menu) {
             case 'achievements':
-                return buildAchievementsMenu(interaction);
+                return buildAchievementsMenu(playerData);
             case 'bestiary':
-                return buildBestiaryMenu(interaction);
+                return buildBestiaryMenu(playerData);
             default:
-                return buildStatsMenu(interaction);
+                return buildStatsMenu(playerData);
         }
     } catch (error) {
         Log.error(error, 'buildMenu');
