@@ -1,16 +1,18 @@
 import {
+    APIInteractionGuildMember,
     ButtonInteraction,
     CacheType,
-    ChatInputCommandInteraction,
     Client,
     ClientEvents,
+    CommandInteraction,
     ErrorEvent,
     Guild,
     GuildMember,
     Interaction,
     Message,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
-    TextChannel
+    TextChannel,
+    User
 } from 'discord.js';
 import buttons from './buttons';
 import ButtonStyles from './button-styles';
@@ -36,12 +38,14 @@ export type DiscordEvent = {
 
 export type DiscordClient = Client<true>;
 export type DiscordCommandBody = RESTPostAPIChatInputApplicationCommandsJSONBody;
-export type DiscordCommandInteraction = ChatInputCommandInteraction | ButtonInteraction<CacheType>;
+export type DiscordCommandInteraction = CommandInteraction;
+export type DiscordButtonInteraction = ButtonInteraction<CacheType>;
 export type DiscordError = ErrorEvent;
 export type DiscordInteraction = Interaction;
 export type DiscordGuild = Guild;
-export type DiscordMember = GuildMember;
+export type DiscordMember = GuildMember | APIInteractionGuildMember;
 export type DiscordMessage = Message<true>;
+export type DiscordUser = User;
 
 export default {
     ButtonStyles,

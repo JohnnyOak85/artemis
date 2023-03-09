@@ -1,5 +1,6 @@
 import { PermissionFlagsBits } from 'discord.js';
 
 export default {
-    admin: PermissionFlagsBits.Administrator
+    admin: PermissionFlagsBits.Administrator,
+    bans: PermissionFlagsBits.BanMembers
 };

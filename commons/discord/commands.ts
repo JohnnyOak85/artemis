@@ -1,7 +1,5 @@
 import {
-    ButtonInteraction,
-    CacheType,
-    ChatInputCommandInteraction,
+    CommandInteraction,
     REST,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     Routes,
@@ -16,15 +14,23 @@ type GuildCommand = {
     token: string;
 };
 
+type CommandOptions = {
+    description: string;
+    name: string;
+    required?: boolean;
+    type: string;
+};
+
 type Command = {
     description: string;
     dmPermission: boolean;
     memberPermissions?: bigint;
     name: string;
+    options?: CommandOptions[];
 };
 
 type CommandBody = {
-    execute: (interaction: ChatInputCommandInteraction | ButtonInteraction<CacheType>) => any;
+    execute: (interaction: CommandInteraction) => any;
 };
 
 interface CommandData extends CommandBody {
@@ -38,13 +44,35 @@ const registerCommand = ({ body, clientId, guildId, token }: GuildCommand) =>
         .setToken(token)
         .put(Routes.applicationGuildCommands(clientId, guildId), { body });
 
+const setOptions = (
+    slashCommand: SlashCommandBuilder,
+    { description, name, required = false, type }: CommandOptions
+) => {
+    switch (type) {
+        case 'user':
+            slashCommand.addUserOption(option =>
+                option.setName(name).setDescription(description).setRequired(!!required)
+            );
+            break;
+        case 'string':
+            slashCommand.addStringOption(option =>
+                option.setName(name).setDescription(description)
+            );
+    }
+};
+
 export default {
-    buildCommand: ({ description, dmPermission, memberPermissions, name }: Command) =>
-        new SlashCommandBuilder()
+    buildCommand: ({ description, dmPermission, memberPermissions, name, options }: Command) => {
+        const slashCommand = new SlashCommandBuilder()
             .setName(name)
             .setDescription(description)
             .setDMPermission(dmPermission)
-            .setDefaultMemberPermissions(memberPermissions),
+            .setDefaultMemberPermissions(memberPermissions);
+
+        options?.forEach(option => setOptions(slashCommand, option));
+
+        return slashCommand;
+    },
     getCommand: (commandName: string) => commandCollection.get(commandName),
     registerCommands: async (
         token: string,
