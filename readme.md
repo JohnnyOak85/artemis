@@ -9,7 +9,6 @@
 
 ---
 
--   [Table of Contents](#table-of-contents)
 -   [Introduction](#introduction)
 -   [Discord Commons](#discord-commons)
     -   [Buttons](#buttons)
