@@ -7,8 +7,6 @@
 
 ## Table of Contents
 
----
-
 -   [Introduction](#introduction)
 -   [Discord Commons](#discord-commons)
     -   [Buttons](#buttons)
@@ -41,8 +39,6 @@
 
 ## Introduction
 
----
-
 Artemis is my all purpose bot with various modules. It was born from parts of other bots.  
 The first bot I created was [ToriBot](https://github.com/JohnnyOak85/DiscordBot) which started as a moderation bot but then expanded to have more functionalities.  
 I then had the idea for a Discord based game, but since ToriBot was getting old and cluttered, I decided to create [Tales of Murwelgrave](https://github.com/JohnnyOak85/Tales-of-Murwelgrave). It worked fairly well for an Halloween season during the month of October 2022.  
@@ -51,8 +47,6 @@ Since then, I've been refactoring Artemis to use modular microservices, thus the
 More modules will be added and I'd like to dabble into GTP3 so that Artemis can have a brain.
 
 ## Discord Commons
-
----
 
 Abstracts all needed types and methods from [Discord.js](https://discord.js.org/#/).
 
@@ -125,8 +119,6 @@ Abstracts all needed types and methods from [Discord.js](https://discord.js.org/
 | .start | Creates a new the Discord client and registers all events. |
 
 ## Tools Commons
-
----
 
 ### Api
 
@@ -223,8 +215,6 @@ Manipulates strings.
 | .startsWithAny  | Checks if a string starts with a certain value.                                                                                         |
 
 ## Modules
-
----
 
 ### Tales of Murwelgrave
 
