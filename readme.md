@@ -5,6 +5,20 @@
 
 <p align="center">An all purpose Discord bot</p>
 
+<p align="center">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/JohnnyOak85/oak-server.svg">
+
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/JohnnyOak85/oak-server.svg">
+
+  <a href="https://github.com/JohnnyOak85/oak-server/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/JohnnyOak85/oak-server.svg">
+  </a>
+
+ <a href="https://www.codacy.com/gh/JohnnyOak85/artemis/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JohnnyOak85/artemis&amp;utm_campaign=Badge_Grade">
+    <img alt="Codacy Badge" src="https://app.codacy.com/project/badge/Grade/1f8f3376b5a648e48b446f547a3063ba" />
+ </a>
+</p>
+
 ## Table of Contents
 
 -   [Introduction](#introduction)
