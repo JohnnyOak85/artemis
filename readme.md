@@ -21,15 +21,14 @@
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-- [Modules](#modules)
-  - [Game (Tales of Murwelgrave)](#game-tales-of-murwelgrave)
-  - [Moderation](#moderation)
-  - [Quote](#quote)
-  - [Reminder](#reminder)
-  - [Speech](#speech)
-  - [Story](#story)
+-   [Introduction](#introduction)
+-   [Modules](#modules)
+    -   [Game (Tales of Murwelgrave)](#game-tales-of-murwelgrave)
+    -   [Moderation](#moderation)
+    -   [Quote](#quote)
+    -   [Reminder](#reminder)
+    -   [Speech](#speech)
+    -   [Story](#story)
 
 ## Introduction
 
