@@ -1,32 +1,38 @@
-import { Dictionary } from '../../commons';
-import Discord, { DiscordChannel, DiscordMessage } from '../../commons/discord';
-import { Api, Gamble, Log, Quirk } from '../../commons/tools';
+import {
+    Dictionary,
+    isDM,
+    logError,
+    Message,
+    randomIndex,
+    roshambo,
+    TextChannel
+} from '../../shared';
+import { getData, tryToQuirkSpeech } from '.';
 
 const getGreeting = async () => {
-    const greetings = await Api.get<string[]>('speech/replies/greetings');
+    const greetings = await getData<string[]>('replies/greetings');
 
-    return greetings[Gamble.randomIndex(greetings)];
+    return greetings[randomIndex(greetings)];
 };
 
 const getPrediction = async () => {
-    const predictions = await Api.get<string[]>('speech/replies/predictions');
+    const predictions = await getData<string[]>('replies/predictions');
 
-    return predictions[Gamble.randomIndex(predictions)];
+    return predictions[randomIndex(predictions)];
 };
 
 const getReaction = async (word: string) => {
-    const reactions = await Api.get<Dictionary<string>>('speech/replies/reactions');
+    const reactions = await getData<Dictionary<string>>('replies/reactions');
     return reactions[word];
 };
 
 const getResponse = async (word: string) => {
-    const responses = await Api.get<Dictionary<string>>('speech/replies/responses');
+    const responses = await getData<Dictionary<string>>('replies/responses');
     return responses[word];
 };
 
-export const checkMessage = async (message: DiscordMessage) => {
-    if (message.channel.type === Discord.ChannelTypes.dm || message.author.bot || !message.guild)
-        return;
+export const checkMessage = async (message: Message<true>) => {
+    if (isDM(message.channel.type) || message.author.bot || !message.guild) return;
 
     try {
         const words = message.content.toLowerCase().split(' ');
@@ -34,15 +40,15 @@ export const checkMessage = async (message: DiscordMessage) => {
         const mentioned = message.mentions.has(message.client.user.id);
         const questioned = message.content.endsWith('?');
 
-        const willReact = Gamble.roshambo();
-        const willRespond = Gamble.roshambo();
-        const willPredict = Gamble.roshambo();
+        const willReact = roshambo();
+        const willRespond = roshambo();
+        const willPredict = roshambo();
 
         let reacted = false;
         let responded = false;
 
         if (questioned && (mentioned || willPredict)) {
-            message.reply(await Quirk.try(await getPrediction()));
+            message.reply(await tryToQuirkSpeech(await getPrediction()));
 
             responded = true;
         }
@@ -64,7 +70,7 @@ export const checkMessage = async (message: DiscordMessage) => {
 
                 if (!response) continue;
 
-                if (message.channel instanceof DiscordChannel) {
+                if (message.channel instanceof TextChannel) {
                     message.channel.send(response);
                 }
 
@@ -73,10 +79,10 @@ export const checkMessage = async (message: DiscordMessage) => {
         }
 
         if (!responded && mentioned) {
-            message.reply(await Quirk.try(await getGreeting()));
+            message.reply(await tryToQuirkSpeech(await getGreeting()));
         }
     } catch (error) {
-        Log.error(error, 'checkMessage');
+        logError(error, 'checkMessage');
         throw error;
     }
 };

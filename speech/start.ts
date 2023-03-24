@@ -1,8 +1,8 @@
-import Discord, { DiscordEvent } from '../commons/discord';
-import events from './events';
+import { GatewayIntentBits, start } from '../shared';
+import { Events } from './events';
 
-Discord.start(events as DiscordEvent[], [
-    Discord.Intents.content,
-    Discord.Intents.guilds,
-    Discord.Intents.messages
+start(Events, [
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.MessageContent
 ]);

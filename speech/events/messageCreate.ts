@@ -1,7 +1,7 @@
-import Discord, { DiscordMessage } from '../../commons/discord';
-import { checkMessage } from '../helpers/speech';
+import { Events, Message } from '../../shared';
+import { checkMessage } from '../helpers';
 
-export default {
-    name: Discord.Events.message,
-    execute: (message: DiscordMessage) => checkMessage(message)
+export const MessageCreateEvent = {
+    name: Events.MessageCreate,
+    execute: (message: Message<true>) => checkMessage(message)
 };

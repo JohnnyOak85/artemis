@@ -1,4 +1,4 @@
-import error from './error';
-import messageCreate from './messageCreate';
+import { Event, SharedEvents } from '../../shared';
+import { MessageCreateEvent } from './messageCreate';
 
-export default [error, messageCreate];
+export const Events = [...SharedEvents, MessageCreateEvent] as Event[];
