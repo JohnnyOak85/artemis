@@ -67,7 +67,7 @@ const replaceWord = (text: string, find: string, replace: string) => {
 };
 
 const addQuirks = async (text: string) => {
-    const quirkList = await Api.get<QuirkEntry[][]>('quirks');
+    const quirkList = await Api.get<QuirkEntry[][]>('speech/quirks');
     const quirks = quirkList[Gamble.randomIndex(quirkList)];
 
     text = `${text} `;
