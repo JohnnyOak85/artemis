@@ -17,7 +17,7 @@ const getData = async <T>(url: string) => Api.get<T>(`game/${url}`);
 
 const getRankInfo = async () => {
     try {
-        const ranks = await getData<RankData[]>('rank');
+        const ranks = await getData<RankData[]>('ranks');
         let rank: RankData | undefined;
 
         while (!rank) {
@@ -34,7 +34,7 @@ const getRankInfo = async () => {
 
 const getMonsterInfo = async (rank: number) => {
     try {
-        const area = await getData<Area>('area/data');
+        const area = await getData<Area>('areas/data');
         const rankMonsters = area[rank];
         const monsterList = Object.keys(rankMonsters);
         const monster = monsterList[Gamble.randomIndex(monsterList)];

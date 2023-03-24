@@ -3,7 +3,7 @@ import { Player } from './player';
 import stats from './stats';
 import { Monster } from './stores/monster.store';
 
-const getData = <T>(url: string) => Api.get<T>(`game/area/${url}`);
+const getData = <T>(url: string) => Api.get<T>(`game/areas/${url}`);
 
 export const checkBoss = ({ achievements }: Player, { index, description }: Monster) => {
     if (index < 3) return '';

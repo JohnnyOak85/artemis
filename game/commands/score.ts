@@ -10,6 +10,6 @@ const commandData = {
 export default {
     data: Discord.buildCommand(commandData),
     execute: async (interaction: DiscordCommandInteraction) => {
-        interaction.reply(await getScoreBoard());
+        interaction.reply(await getScoreBoard(interaction));
     }
 };

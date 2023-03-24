@@ -1,4 +1,8 @@
-import Discord, { DiscordGuild, DiscordMember, DiscordUser } from '../../../commons/discord';
+import Discord, {
+    DiscordGuild,
+    DiscordInteractionMember,
+    DiscordUser
+} from '../../../commons/discord';
 import { Api, Log } from '../../../commons/tools';
 import { getPlayer } from '../player';
 import buttons from './buttons';
@@ -6,7 +10,7 @@ import embeds from './embeds';
 
 type PlayerData = {
     guild: DiscordGuild | null;
-    member: DiscordMember | null;
+    member: DiscordInteractionMember | null;
     user: DiscordUser;
 };
 
@@ -34,7 +38,7 @@ const buildAchievementsMenu = async (playerData: PlayerData) => ({
 });
 
 const buildBestiaryMenu = async (playerData: PlayerData) => {
-    const monsterList = await Api.get<string[]>('game/area/list');
+    const monsterList = await Api.get<string[]>('game/areas/list');
 
     return {
         components: Discord.buildButtonRow([buttons.stats(), buttons.achievements()]),

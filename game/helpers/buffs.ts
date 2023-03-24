@@ -1,4 +1,4 @@
-import { TextChannel } from 'discord.js';
+import { DiscordChannel } from '../../commons/discord';
 import { Dictionary } from '../../commons';
 import { Api, Calculator, Gamble, Word } from '../../commons/tools';
 import { checkBoss, checkMonster, checkStats } from './achievements';
@@ -57,7 +57,7 @@ const boostLuck = async (player: Player, monster: Monster) => {
 
 const boostAttributes = async (reply: string[]) => {
     const { max } = await stats.getAttributeStats();
-    const attributes = await Api.get<string[]>('game/player/attributes');
+    const attributes = await Api.get<string[]>('game/players/attributes');
     const attributesGained: Dictionary<number> = {};
     let gainCounter = 0;
 
@@ -79,7 +79,7 @@ const boostAttributes = async (reply: string[]) => {
     }
 };
 
-export default async (player: Player, monster: Monster, channel: TextChannel) => {
+export default async (player: Player, monster: Monster, channel: DiscordChannel) => {
     const reply = [`**${player.name}** wins!`];
     const currentLevel = player.level;
 

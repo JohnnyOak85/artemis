@@ -4,6 +4,7 @@ import stats from './stats';
 import { Battler } from './stores/fighter.store';
 
 interface PlayerDoc {
+    _id?: string;
     achievements: string[];
     attributes: Dictionary<number>;
     attack: number;
@@ -29,7 +30,7 @@ export type PlayerData = {
 
 type PlayerRanks = Dictionary<string>;
 
-const URL = 'game/player';
+const URL = 'game/players';
 
 const getPlayerRank = async (titles: string[]) => {
     const ranks = await Api.get<PlayerRanks>(`${URL}/ranks`);
@@ -39,7 +40,7 @@ const getPlayerRank = async (titles: string[]) => {
 };
 
 export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Player> => {
-    const player = await Api.get<PlayerDoc>(URL, { player: id });
+    const player = await Api.get<PlayerDoc>(`${URL}/${id}`);
     const { attack, defense, health } = await stats.getPlayerBaseStats();
 
     return {
@@ -60,7 +61,7 @@ export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Playe
     };
 };
 
-export const getPlayers = async () => Api.get<PlayerDoc[]>('game/players');
+export const getPlayers = async () => Api.get<PlayerDoc[]>(`${URL}/all`);
 
 export const savePlayer = async ({ boost, damage, id, originalHealth, type, ...player }: Player) =>
     Api.put<PlayerDoc>(URL, player);

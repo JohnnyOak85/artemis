@@ -31,7 +31,7 @@ export const rankUp = async (
 
     if (!oldRank?.id) return '';
 
-    const playerRanks = await Api.get<Dictionary<string>>('game/player/ranks');
+    const playerRanks = await Api.get<Dictionary<string>>('game/players/ranks');
     const newRank = await Discord.getGuildRole(guild, playerRanks[rank]);
 
     if (!newRank?.id) return '';

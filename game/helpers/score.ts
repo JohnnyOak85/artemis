@@ -1,17 +1,30 @@
-import Discord from '../../commons/discord';
+import Discord, { DiscordCommandInteraction, DiscordGuild } from '../../commons/discord';
 import { Log, Word } from '../../commons/tools';
 import { getPlayers } from './player';
 
-export const getScoreBoard = async () => {
+const getRanking = async (guild: DiscordGuild | null) => {
+    const players = await getPlayers();
+    const sortedPlayers = players.sort((a, b) => a.wins - a.losses - (b.wins - b.losses)).reverse();
+
+    if (!guild) {
+        return sortedPlayers;
+    }
+
+    return sortedPlayers.map(async player => {
+        if (player._id) {
+            player.name = await Discord.getMemberNickname(guild, player._id, player.name);
+        }
+
+        return player;
+    });
+};
+
+export const getScoreBoard = async ({ guild }: DiscordCommandInteraction) => {
     try {
-        const players = await getPlayers();
+        const ranking = await getRanking(guild);
         const scoreBoard: string[] = [];
 
-        const sortedPlayers = players
-            .sort((a, b) => a.wins - a.losses - (b.wins - b.losses))
-            .reverse();
-
-        sortedPlayers.forEach(({ losses, name, wins }, i) => {
+        ranking.forEach(({ losses, name, wins }, i) => {
             if (i === 0) {
                 scoreBoard.push(`:trophy: ${name}: ${wins - losses}`);
             } else if (i === 1) {
