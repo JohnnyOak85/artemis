@@ -3,24 +3,24 @@ import Discord, { DiscordChannel, DiscordMessage } from '../../commons/discord';
 import { Api, Gamble, Log, Quirk } from '../../commons/tools';
 
 const getGreeting = async () => {
-    const greetings = await Api.get<string[]>('greetings');
+    const greetings = await Api.get<string[]>('speech/replies/greetings');
 
     return greetings[Gamble.randomIndex(greetings)];
 };
 
 const getPrediction = async () => {
-    const predictions = await Api.get<string[]>('predictions');
+    const predictions = await Api.get<string[]>('speech/replies/predictions');
 
     return predictions[Gamble.randomIndex(predictions)];
 };
 
 const getReaction = async (word: string) => {
-    const reactions = await Api.get<Dictionary<string>>('reactions');
+    const reactions = await Api.get<Dictionary<string>>('speech/replies/reactions');
     return reactions[word];
 };
 
 const getResponse = async (word: string) => {
-    const responses = await Api.get<Dictionary<string>>('responses');
+    const responses = await Api.get<Dictionary<string>>('speech/replies/responses');
     return responses[word];
 };
 
