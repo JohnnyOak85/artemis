@@ -27,6 +27,7 @@ import Permissions from './permissions';
 import roles from './roles';
 import start from './start';
 
+export * from './embeds';
 export class DiscordChannel extends TextChannel {}
 
 type EventKey = keyof ClientEvents;
@@ -43,7 +44,8 @@ export type DiscordButtonInteraction = ButtonInteraction<CacheType>;
 export type DiscordError = ErrorEvent;
 export type DiscordInteraction = Interaction;
 export type DiscordGuild = Guild;
-export type DiscordMember = GuildMember | APIInteractionGuildMember;
+export type DiscordMember = GuildMember;
+export type DiscordInteractionMember = GuildMember | APIInteractionGuildMember;
 export type DiscordMessage = Message<true>;
 export type DiscordUser = User;
 

@@ -16,4 +16,6 @@ export default (
     for (const event of events) {
         client.on(event.name, (...args) => event.execute(...args));
     }
+
+    console.log('Module started');
 };

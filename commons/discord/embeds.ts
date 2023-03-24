@@ -11,7 +11,7 @@ type Embed = {
     url?: string | null;
 };
 
-const buildEmbed = ({
+export const buildEmbed = ({
     color = null,
     description = null,
     fields = null,
@@ -41,5 +41,6 @@ export default {
     buildEmbed: (embedData: Embed) => ({
         embeds: [buildEmbed(embedData)]
     }),
-    buildEmbedData: (embedData: Embed) => [buildEmbed(embedData)]
+    buildEmbedData: (embedData: Embed) => [buildEmbed(embedData)],
+    buildEmbedList: (embedList: Embed[]) => embedList.map(embedData => buildEmbed(embedData))
 };
