@@ -1,4 +1,7 @@
 /node_modules
+
 *.log
+*.tmp
+
 .env
 TODO.md
