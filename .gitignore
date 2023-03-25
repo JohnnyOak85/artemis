@@ -4,4 +4,4 @@
 # Files
 *.log
 *.tmp
-*.env
+.env
