@@ -1,5 +1,6 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 import { Dictionary, getVariables } from '..';
+import { Agent } from 'https';
 
 interface RequestOptions extends AxiosRequestConfig {
     data?: any;
@@ -7,7 +8,10 @@ interface RequestOptions extends AxiosRequestConfig {
     url: string;
 }
 
-const client = Axios.create();
+// TODO This is insecure
+const httpsAgent = new Agent({ rejectUnauthorized: false });
+
+const client = Axios.create({ httpsAgent });
 
 export const get = <T>({ url, ...options }: RequestOptions) => client.get<T>(url, options);
 export const put = <T>({ url, data }: RequestOptions) => client.put<T>(url, data);
