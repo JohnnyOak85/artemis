@@ -1,13 +1,13 @@
-import Discord, { DiscordMessage } from '../../commons/discord';
+import { Events, Message } from '../../shared';
 
-export default {
-    name: Discord.Events.message,
-    execute: async (message: DiscordMessage) => {
+export const MessageCreateEvent = {
+    name: Events.MessageCreate,
+    execute: async (message: Message<true>) => {
         const guild = message.guild;
 
         const bans = await guild?.bans.fetch();
 
-        /*
+        /* TODO
         For each ban, construct a ban string with username, reason and id.
         Reply to issuer of the command
         */
@@ -15,7 +15,7 @@ export default {
             console.log(ban.user.username, ban.reason, ban.user.id);
         });
 
-        /*
+        /* TODO
         To remove a ban, it needs a user id.
         Get user id from list of bans
         */

@@ -1,10 +1,10 @@
-import Discord, { DiscordCommandInteraction } from '../../commons/discord';
-import { warnUser } from '../helpers/warns';
+import { buildCommand, CommandInteraction, PermissionFlagsBits } from '../../shared';
+import { warnUser } from '../helpers';
 
 const commandData = {
     description: 'Issue a warning to a member for misbehavior. (Moderation Exclusive)',
     dmPermission: false,
-    memberPermissions: Discord.Permissions.bans,
+    memberPermissions: PermissionFlagsBits.BanMembers,
     name: 'warn',
     options: [
         {
@@ -22,8 +22,8 @@ const commandData = {
 };
 
 export default {
-    data: Discord.buildCommand(commandData),
-    execute: async (interaction: DiscordCommandInteraction) => {
+    data: buildCommand(commandData),
+    execute: async (interaction: CommandInteraction) => {
         const [user, string] = commandData.options;
 
         interaction.reply({

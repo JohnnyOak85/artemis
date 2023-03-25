@@ -1,3 +1,3 @@
-import warn from './warn';
+import warn from './warn.command';
 
-export default [warn];
+export const Commands = [warn];

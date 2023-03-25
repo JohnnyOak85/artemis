@@ -1,15 +1,15 @@
-import Discord, { DiscordInteraction } from '../../commons/discord';
+import { Events, getCommand, Interaction } from '../../shared';
 
-export default {
-    name: Discord.Events.interaction,
-    execute: async (interaction: DiscordInteraction) => {
-        // List bans as ephemeral
-        // When you list a person's warnings, have info if banned
-        // Have a button to unban the person
+export const InteractionCreateEvent = {
+    name: Events.InteractionCreate,
+    execute: async (interaction: Interaction) => {
+        // TODO List bans as ephemeral
+        // TODO When you list a person's warnings, have info if banned
+        // TODO Have a button to unban the person
 
         if (!interaction.isChatInputCommand()) return;
 
-        const command = Discord.getCommand(interaction.commandName);
+        const command = getCommand(interaction.commandName);
 
         try {
             if (!command) {

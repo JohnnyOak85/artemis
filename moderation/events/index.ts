@@ -1,5 +1,11 @@
-import error from './error';
-import interactionCreate from './interactionCreate';
-import ready from './ready';
+import { DiscordEvent, SharedEvents } from '../../shared';
+import { InteractionCreateEvent } from './interactionCreate.event';
+import { MessageCreateEvent } from './messageCreate.event';
+import { ReadyEvent } from './ready.event';
 
-export default [error, interactionCreate, ready];
+export const Events = [
+    ...SharedEvents,
+    InteractionCreateEvent,
+    MessageCreateEvent,
+    ReadyEvent
+] as DiscordEvent[];

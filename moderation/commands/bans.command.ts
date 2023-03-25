@@ -1,15 +1,15 @@
-import Discord, { DiscordCommandInteraction } from '../../commons/discord';
+import { buildCommand, CommandInteraction, PermissionFlagsBits } from '../../shared';
 
 const commandData = {
     description: 'List all banned members. (Moderation Exclusive)',
     dmPermission: false,
-    memberPermissions: Discord.Permissions.bans,
+    memberPermissions: PermissionFlagsBits.BanMembers,
     name: 'bans'
 };
 
 export default {
-    data: Discord.buildCommand(commandData),
-    execute: async (interaction: DiscordCommandInteraction) => {
+    data: buildCommand(commandData),
+    execute: async (interaction: CommandInteraction) => {
         const bans = await interaction.guild?.bans.fetch();
 
         bans?.forEach(ban => {
