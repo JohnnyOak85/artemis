@@ -1,3 +1,4 @@
-import ready from './ready';
+import { DiscordEvent, SharedEvents } from '../../shared';
+import { ReadyEvent } from './ready.event';
 
-export default [ready];
+export const Events = [...SharedEvents, ReadyEvent] as DiscordEvent[];
