@@ -16,6 +16,7 @@ export const getVariables = () => {
         return {
             api: process.env.API_URL!,
             game: process.env.GAME_CHANNEL!,
+            gaming: process.env.GAMING_CHANNEL!,
             general: process.env.GENERAL_CHANNEL!,
             guild: process.env.GUILD_ID!,
             monsterApi: process.env.MONSTER_API!,

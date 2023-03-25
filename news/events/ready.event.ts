@@ -12,14 +12,13 @@ import { getNews } from '../helpers';
 export const ReadyEvent = {
     name: Events.ClientReady,
     execute: async ({ guilds }: Client<true>) => {
-        const { guild: guildId } = getVariables();
+        const { gaming: channelId, guild: guildId } = getVariables();
 
         runDailyJob(async () => {
             try {
                 logInfo('news', 'sendingGamingNews');
-
                 const guild = await guilds.fetch(guildId);
-                const channel = await getChannel(guild, '1005121368066621560');
+                const channel = await getChannel(guild, channelId);
 
                 channel?.send({
                     content: `Here's today's gaming news!`,
