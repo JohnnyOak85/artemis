@@ -1,4 +1,4 @@
-import { Event, SharedEvents } from '../../shared';
-import { MessageCreateEvent } from './messageCreate';
+import { DiscordEvent, SharedEvents } from '../../shared';
+import { MessageCreateEvent } from './messageCreate.event';
 
-export const Events = [...SharedEvents, MessageCreateEvent] as Event[];
+export const Events = [...SharedEvents, MessageCreateEvent] as DiscordEvent[];

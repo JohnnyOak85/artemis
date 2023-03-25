@@ -1,33 +1,36 @@
 import {
     Dictionary,
+    getData,
     isDM,
     logError,
     Message,
     randomIndex,
     roshambo,
-    TextChannel
+    TextChannel,
+    tryToQuirkSpeech
 } from '../../shared';
-import { getData, tryToQuirkSpeech } from '.';
+
+const prefix = 'speech/replies';
 
 const getGreeting = async () => {
-    const greetings = await getData<string[]>('replies/greetings');
+    const greetings = await getData<string[]>(`${prefix}/greetings`);
 
     return greetings[randomIndex(greetings)];
 };
 
 const getPrediction = async () => {
-    const predictions = await getData<string[]>('replies/predictions');
+    const predictions = await getData<string[]>(`${prefix}/predictions`);
 
     return predictions[randomIndex(predictions)];
 };
 
 const getReaction = async (word: string) => {
-    const reactions = await getData<Dictionary<string>>('replies/reactions');
+    const reactions = await getData<Dictionary<string>>(`${prefix}/reactions`);
     return reactions[word];
 };
 
 const getResponse = async (word: string) => {
-    const responses = await getData<Dictionary<string>>('replies/responses');
+    const responses = await getData<Dictionary<string>>(`${prefix}/responses`);
     return responses[word];
 };
 
@@ -82,7 +85,7 @@ export const checkMessage = async (message: Message<true>) => {
             message.reply(await tryToQuirkSpeech(await getGreeting()));
         }
     } catch (error) {
-        logError(error, 'checkMessage');
+        logError(error, 'speech/checkMessage');
         throw error;
     }
 };
