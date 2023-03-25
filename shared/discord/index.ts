@@ -28,8 +28,8 @@ export * from './start';
 
 type EventKey = keyof ClientEvents;
 
-export type Event = {
-    name: Events;
+export type DiscordEvent = {
+    name: keyof ClientEvents;
     execute: (...args: ClientEvents[EventKey]) => Promise<void> | void;
 };
 

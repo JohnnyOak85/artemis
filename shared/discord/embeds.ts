@@ -38,3 +38,5 @@ export const buildEmbed = ({
 };
 
 export const getEmbeds = (embedList: Embed[]) => embedList.map(embedData => buildEmbed(embedData));
+
+export const getEmbedObject = (embedList: Embed[]) => ({ embeds: getEmbeds(embedList) });

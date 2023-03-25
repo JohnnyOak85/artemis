@@ -1,10 +1,11 @@
 import { BitFieldResolvable, Client, GatewayIntentsString } from 'discord.js';
-import { Event } from '.';
-import { getVariables } from '../tools';
+import { DiscordEvent } from '.';
+import { getVariables, logInfo } from '../tools';
 
 export const start = (
-    events: Event[],
-    intents: BitFieldResolvable<GatewayIntentsString, number>[]
+    events: DiscordEvent[],
+    intents: BitFieldResolvable<GatewayIntentsString, number>[],
+    module: string
 ) => {
     const { token } = getVariables();
     const client = new Client({ intents });
@@ -15,5 +16,6 @@ export const start = (
         client.on(event.name, (...args) => event.execute(...args));
     }
 
+    logInfo(module, 'Module started');
     console.log('Module started');
 };

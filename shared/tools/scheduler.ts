@@ -17,10 +17,10 @@ export const getJob = (timestamp: Timestamp, callBack: VoidCallback) =>
 
 export const generateTimestamp = () => `${random(59, 0)} ${random(23, 0)} * * ${random(6, 0)}`;
 
-export const run = (timestamp: Timestamp, callBack: VoidCallback) =>
+export const runJob = (timestamp: Timestamp, callBack: VoidCallback) =>
     new CronJob(parseTimestamp(timestamp), callBack).start();
 
-export const runOnce = (timestamp: Timestamp, callBack: VoidCallback) => {
+export const runJobOnce = (timestamp: Timestamp, callBack: VoidCallback) => {
     const job = new CronJob(parseTimestamp(timestamp), () => {
         callBack();
         job.stop();
@@ -29,7 +29,7 @@ export const runOnce = (timestamp: Timestamp, callBack: VoidCallback) => {
     job.start();
 };
 
-export const runTemp = (timestamp: Timestamp, callBack: VoidCallback) => {
+export const runJobTemp = (timestamp: Timestamp, callBack: VoidCallback) => {
     const job = new CronJob(parseTimestamp(timestamp), callBack);
     jobs.put(key, job);
     job.start();
@@ -39,5 +39,12 @@ export const stopJob = () => {
     const job = jobs.get(key);
     job?.stop();
 };
+
+export const runWeeklyJob = (callBack: VoidCallback) =>
+    runJob(WEEK_START, () => {
+        runJobOnce(generateTimestamp(), callBack);
+    });
+
+export const runDailyJob = (callback: VoidCallback) => runJob(NOON, callback);
 
 export { CronJob };
