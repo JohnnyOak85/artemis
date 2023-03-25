@@ -1,4 +1,4 @@
-import Discord from '../commons/discord';
-import events from './events';
+import { GatewayIntentBits, start } from '../shared';
+import { Events } from './events';
 
-Discord.start(events, [Discord.Intents.guilds]);
+start(Events, [GatewayIntentBits.Guilds], 'news');

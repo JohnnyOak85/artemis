@@ -1,18 +1,17 @@
-import { buildEmbed } from '../../commons/discord';
-import { Api } from '../../commons/tools';
+import { getData, getEmbedObject } from '../../shared';
 import { Article } from '../types';
 
 export const getNews = async (type: string) => {
     try {
-        const articles = await Api.get<Article[]>(`news/${type}`);
+        const articles = await getData<Article[]>(`news/${type}`);
 
-        return articles.map(article =>
-            buildEmbed({
+        return getEmbedObject(
+            articles.map(article => ({
                 description: article.excerpt,
                 image: article.media,
                 title: article.title,
                 url: article.link
-            })
+            }))
         );
     } catch (error) {
         throw error;

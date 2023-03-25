@@ -1,4 +1,4 @@
-export interface Article {
+export type Article = {
     author: string;
     authors: string;
     clean_url: string;
@@ -16,4 +16,4 @@ export interface Article {
     title: string;
     topic: string;
     twitter_account: string;
-}
+};
