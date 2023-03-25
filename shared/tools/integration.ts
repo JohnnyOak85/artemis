@@ -8,10 +8,7 @@ interface RequestOptions extends AxiosRequestConfig {
     url: string;
 }
 
-// TODO This is insecure
-const httpsAgent = new Agent({ rejectUnauthorized: false });
-
-const client = Axios.create({ httpsAgent });
+const client = Axios.create();
 
 export const get = <T>({ url, ...options }: RequestOptions) => client.get<T>(url, options);
 export const put = <T>({ url, data }: RequestOptions) => client.put<T>(url, data);
