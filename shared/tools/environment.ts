@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { envPath as path } from '../paths';
+import { envPath as path } from '../../paths';
 
 const startEnvironment = () => {
     const { error } = config({ path });
