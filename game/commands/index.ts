@@ -1,6 +1,6 @@
-import engage from './engage';
-import score from './score';
-import stats from './stats';
-import toggle from './toggle';
+import engage from './engage.command';
+import score from './score.command';
+import stats from './stats.command';
+import toggle from './toggle.command';
 
-export default [engage, score, stats, toggle];
+export const Commands = [engage, score, stats, toggle];

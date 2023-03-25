@@ -1,31 +1,28 @@
-import Discord, { DiscordChannel, DiscordGuild } from '../../commons/discord';
-import { Environment, Log } from '../../commons/tools';
-import spawnMonster from './spawner';
-import gameStore from './stores/game.store';
-import messageStore from './stores/message.store';
-import toggleStore from './stores/toggle.store';
+import { getChannel, getVariables, Guild, logError, TextChannel } from '../../shared';
+import { spawnMonster } from './spawner';
+import { GameStore, MessageStore, ToggleStore } from './stores';
 
-const startGame = (channel: DiscordChannel) => {
-    if (gameStore.hasGame()) {
-        gameStore.restart();
+const startGame = (channel: TextChannel) => {
+    if (GameStore.hasGame()) {
+        GameStore.restart();
     } else {
-        gameStore.start(async () => {
-            messageStore.clearMessage();
+        GameStore.start(async () => {
+            MessageStore.clearMessage();
             const message = await channel.send(await spawnMonster());
-            messageStore.saveMessage(message);
+            MessageStore.saveMessage(message);
         });
     }
 };
 
-export default async (guild: DiscordGuild | null) => {
+export const toggleGame = async (guild: Guild | null) => {
     try {
         if (!guild) {
             throw new Error('No guild');
         }
 
-        const { game } = Environment.get();
-        const isRunning = toggleStore.isRunning();
-        const channel = await Discord.getChannel(guild, game);
+        const { game } = getVariables();
+        const isRunning = ToggleStore.isRunning();
+        const channel = await getChannel(guild, game);
         let reply = 'Starting the game.';
 
         if (!channel) {
@@ -33,18 +30,18 @@ export default async (guild: DiscordGuild | null) => {
         }
 
         if (isRunning) {
-            gameStore.stop();
+            GameStore.stop();
 
             reply = 'Ending the game';
         } else {
             startGame(channel);
         }
 
-        toggleStore.toggle();
+        ToggleStore.toggle();
 
         return reply;
     } catch (error) {
-        Log.error(error, 'toggler');
+        logError(error, 'toggler');
         throw error;
     }
 };

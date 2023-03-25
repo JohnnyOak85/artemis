@@ -1,47 +1,21 @@
-import { Dictionary } from '../../commons';
-import { Api, Gamble } from '../../commons/tools';
-import stats from './stats';
-import { Battler } from './stores/fighter.store';
-
-interface PlayerDoc {
-    _id?: string;
-    achievements: string[];
-    attributes: Dictionary<number>;
-    attack: number;
-    bestiary: string[];
-    defense: number;
-    health: number;
-    level: number;
-    losses: number;
-    luck: number;
-    messages: number;
-    name: string;
-    rank: string;
-    wins: number;
-}
-
-export interface Player extends Battler, PlayerDoc {}
-
-export type PlayerData = {
-    id: string;
-    name: string;
-    titles: string[];
-};
+import { Dictionary, getData, putData, randomIndex } from '../../shared';
+import { Player, PlayerData, PlayerDoc } from './interfaces';
+import { getPlayerBaseStats } from './stats';
 
 type PlayerRanks = Dictionary<string>;
 
 const URL = 'game/players';
 
 const getPlayerRank = async (titles: string[]) => {
-    const ranks = await Api.get<PlayerRanks>(`${URL}/ranks`);
+    const ranks = await getData<PlayerRanks>(`${URL}/ranks`);
     const playerRanks = titles.filter(title => !!ranks[title]);
 
-    return playerRanks[Gamble.randomIndex(playerRanks)];
+    return playerRanks[randomIndex(playerRanks)];
 };
 
 export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Player> => {
-    const player = await Api.get<PlayerDoc>(`${URL}/${id}`);
-    const { attack, defense, health } = await stats.getPlayerBaseStats();
+    const player = await getData<PlayerDoc>(`${URL}/${id}`);
+    const { attack, defense, health } = await getPlayerBaseStats();
 
     return {
         achievements: player?.achievements || [],
@@ -61,7 +35,7 @@ export const getPlayer = async ({ id, name, titles }: PlayerData): Promise<Playe
     };
 };
 
-export const getPlayers = async () => Api.get<PlayerDoc[]>(`${URL}/all`);
+export const getPlayers = async () => getData<PlayerDoc[]>(`${URL}/all`);
 
 export const savePlayer = async ({ boost, damage, id, originalHealth, type, ...player }: Player) =>
-    Api.put<PlayerDoc>(URL, player);
+    putData<PlayerDoc>(URL, player._id!, player);

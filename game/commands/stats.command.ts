@@ -1,5 +1,5 @@
-import Discord, { DiscordCommandInteraction } from '../../commons/discord';
-import { buildMenu } from '../helpers/stats/menu';
+import { buildCommand, CommandInteraction } from '../../shared';
+import { buildMenu } from '../helpers';
 
 const commandData = {
     description: 'Check your stats! (Game Category Exclusive)',
@@ -8,8 +8,8 @@ const commandData = {
 };
 
 export default {
-    data: Discord.buildCommand(commandData),
-    execute: async (interaction: DiscordCommandInteraction) => {
+    data: buildCommand(commandData),
+    execute: async (interaction: CommandInteraction) => {
         const reply = await buildMenu(interaction);
 
         if (!reply) return;

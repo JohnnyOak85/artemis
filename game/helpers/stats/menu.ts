@@ -1,21 +1,25 @@
-import Discord, {
-    DiscordGuild,
-    DiscordInteractionMember,
-    DiscordUser
-} from '../../../commons/discord';
-import { Api, Log } from '../../../commons/tools';
+import {
+    APIInteractionGuildMember,
+    buildButtonRow,
+    getData,
+    getMemberRoles,
+    Guild,
+    GuildMember,
+    logError,
+    User
+} from '../../../shared';
 import { getPlayer } from '../player';
-import buttons from './buttons';
-import embeds from './embeds';
+import { getAchievementsButton, getBestiaryButton, getStatsButton } from './buttons';
+import { getAchievementsEmbed, getBestiaryEmbed, getStatsEmbed } from './embeds';
 
 type PlayerData = {
-    guild: DiscordGuild | null;
-    member: DiscordInteractionMember | null;
-    user: DiscordUser;
+    guild: Guild | null;
+    member: APIInteractionGuildMember | GuildMember | null;
+    user: User;
 };
 
 const getPlayerData = async ({ guild, member, user }: PlayerData) => {
-    const roles = Discord.getPlayerRoles(member);
+    const roles = getMemberRoles(member);
 
     const player = await getPlayer({
         id: user.id,
@@ -33,16 +37,16 @@ const getPlayerData = async ({ guild, member, user }: PlayerData) => {
 };
 
 const buildAchievementsMenu = async (playerData: PlayerData) => ({
-    components: Discord.buildButtonRow([buttons.stats(), buttons.bestiary()]),
-    embeds: embeds.achievements(await getPlayerData(playerData))
+    components: buildButtonRow([getStatsButton(), getBestiaryButton()]),
+    ...getAchievementsEmbed(await getPlayerData(playerData))
 });
 
 const buildBestiaryMenu = async (playerData: PlayerData) => {
-    const monsterList = await Api.get<string[]>('game/areas/list');
+    const monsterList = await getData<string[]>('game/areas/list');
 
     return {
-        components: Discord.buildButtonRow([buttons.stats(), buttons.achievements()]),
-        embeds: embeds.bestiary({
+        components: buildButtonRow([getStatsButton(), getAchievementsButton()]),
+        ...getBestiaryEmbed({
             ...(await getPlayerData(playerData)),
             monsterList
         })
@@ -50,8 +54,8 @@ const buildBestiaryMenu = async (playerData: PlayerData) => {
 };
 
 const buildStatsMenu = async (playerData: PlayerData) => ({
-    components: Discord.buildButtonRow([buttons.bestiary(), buttons.achievements()]),
-    embeds: embeds.stats(await getPlayerData(playerData))
+    components: buildButtonRow([getBestiaryButton(), getAchievementsButton()]),
+    ...getStatsEmbed(await getPlayerData(playerData))
 });
 
 export const buildMenu = (playerData: PlayerData, menu?: string) => {
@@ -65,7 +69,7 @@ export const buildMenu = (playerData: PlayerData, menu?: string) => {
                 return buildStatsMenu(playerData);
         }
     } catch (error) {
-        Log.error(error, 'buildMenu');
+        logError(error, 'buildMenu');
         throw error;
     }
 };

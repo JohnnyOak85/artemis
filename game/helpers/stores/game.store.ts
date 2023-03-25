@@ -1,16 +1,15 @@
-import { Collector, VoidCallback } from '../../../commons';
-import { Job, Schedule } from '../../../commons/tools';
+import { Collector, CronJob, getJob, VoidCallback } from '../../../shared';
 
-const store = new Collector<Job>();
+const store = new Collector<CronJob>();
 const key = 'job';
 
-export default {
+export const GameStore = {
     hasGame: () => store.has(key),
     restart: () => {
         store.get(key)?.start();
     },
     start: (callback: VoidCallback) => {
-        const job = Schedule.getJob('* * * * *', callback);
+        const job = getJob('* * * * *', callback);
         store.put(key, job);
         job.start();
     },

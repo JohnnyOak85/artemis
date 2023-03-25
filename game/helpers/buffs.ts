@@ -1,15 +1,21 @@
-import { DiscordChannel } from '../../commons/discord';
-import { Dictionary } from '../../commons';
-import { Api, Calculator, Gamble, Word } from '../../commons/tools';
+import {
+    buildList,
+    Dictionary,
+    getData,
+    multiply,
+    random,
+    randomIndex,
+    TextChannel,
+    tossCoin
+} from '../../shared';
 import { checkBoss, checkMonster, checkStats } from './achievements';
 import battleCalculator from './battle.calculator';
+import { Monster, Player } from './interfaces';
 import { levelUp, rankUp } from './level-up';
-import { Player } from './player';
-import stats from './stats';
-import { Monster } from './stores/monster.store';
+import { getAttributeStats, getHealthStats, getLuckStats, getStatCaps } from './stats';
 
 const boostStats = async (player: Player, monsterLevel: number, reply: string[]) => {
-    const { statCap } = await stats.getStatCaps();
+    const { statCap } = await getStatCaps();
 
     if (player.attack + player.defense >= statCap) return '';
 
@@ -29,24 +35,24 @@ const boostStat = (player: Player, stat: 'attack' | 'defense', boost: number) =>
 };
 
 const boostHealth = async ({ health, level }: Player, currentLevel: number) => {
-    const { cap, maxControl, maxDivisor } = await stats.getHealthStats();
+    const { cap, maxControl, maxDivisor } = await getHealthStats();
 
     if (level <= currentLevel || health > cap) return '';
 
-    const gain = Gamble.random(maxControl, maxDivisor);
-    health += gain + Calculator.multiply(level);
+    const gain = random(maxControl, maxDivisor);
+    health += gain + multiply(level);
 
     return `**+${gain} Health.**`;
 };
 
 const boostLuck = async (player: Player, monster: Monster) => {
-    const { cap, chance } = await stats.getLuckStats();
+    const { cap, chance } = await getLuckStats();
 
     if (player.luck >= cap) return '';
 
     if (
         battleCalculator.sumStats(player) >= battleCalculator.sumStats(monster) ||
-        Gamble.random() > chance
+        random() > chance
     )
         return '';
 
@@ -56,16 +62,16 @@ const boostLuck = async (player: Player, monster: Monster) => {
 };
 
 const boostAttributes = async (reply: string[]) => {
-    const { max } = await stats.getAttributeStats();
-    const attributes = await Api.get<string[]>('game/players/attributes');
+    const { max } = await getAttributeStats();
+    const attributes = await getData<string[]>('game/players/attributes');
     const attributesGained: Dictionary<number> = {};
     let gainCounter = 0;
 
     while (gainCounter <= max) {
-        const chance = Gamble.tossCoin();
+        const chance = tossCoin();
 
         if (chance) {
-            const index = Gamble.randomIndex(attributes);
+            const index = randomIndex(attributes);
 
             attributesGained[attributes[index]] ??= 0;
             attributesGained[attributes[index]]++;
@@ -79,7 +85,7 @@ const boostAttributes = async (reply: string[]) => {
     }
 };
 
-export default async (player: Player, monster: Monster, channel: DiscordChannel) => {
+export const getBuffs = async (player: Player, monster: Monster, channel: TextChannel) => {
     const reply = [`**${player.name}** wins!`];
     const currentLevel = player.level;
 
@@ -94,5 +100,5 @@ export default async (player: Player, monster: Monster, channel: DiscordChannel)
 
     await boostAttributes(reply);
 
-    channel.send(Word.buildList(reply));
+    channel.send(buildList(reply));
 };

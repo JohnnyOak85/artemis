@@ -1,9 +1,9 @@
-import Discord, { DiscordInteraction } from '../../commons/discord';
-import { buildMenu } from '../helpers/stats/menu';
+import { Events, getCommand, Interaction } from '../../shared';
+import { buildMenu } from '../helpers';
 
 export default {
-    name: Discord.Events.interaction,
-    execute: async (interaction: DiscordInteraction) => {
+    name: Events.InteractionCreate,
+    execute: async (interaction: Interaction) => {
         if (interaction.isButton()) {
             try {
                 await interaction.deferUpdate();
@@ -25,7 +25,7 @@ export default {
 
         if (!interaction.isChatInputCommand()) return;
 
-        const command = Discord.getCommand(interaction.commandName);
+        const command = getCommand(interaction.commandName);
 
         try {
             if (!command) {

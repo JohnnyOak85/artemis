@@ -1,11 +1,10 @@
-import { Collector } from '../../../commons';
-import { DiscordMessage } from '../../../commons/discord';
+import { Collector, Message } from '../../../shared';
 
-const store = new Collector<DiscordMessage>();
+const store = new Collector<Message<true>>();
 const key = 'message';
 
-export default {
-    saveMessage: (message: DiscordMessage) => {
+export const MessageStore = {
+    saveMessage: (message: Message<true>) => {
         store.put(key, message);
     },
     clearMessage: () => {

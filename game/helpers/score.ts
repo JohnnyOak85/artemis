@@ -1,8 +1,14 @@
-import Discord, { DiscordCommandInteraction, DiscordGuild } from '../../commons/discord';
-import { Log, Word } from '../../commons/tools';
+import {
+    buildList,
+    CommandInteraction,
+    getEmbedObject,
+    getMemberNickname,
+    Guild,
+    logError
+} from '../../shared';
 import { getPlayers } from './player';
 
-const getRanking = async (guild: DiscordGuild | null) => {
+const getRanking = async (guild: Guild | null) => {
     const players = await getPlayers();
     const sortedPlayers = players.sort((a, b) => a.wins - a.losses - (b.wins - b.losses)).reverse();
 
@@ -10,16 +16,18 @@ const getRanking = async (guild: DiscordGuild | null) => {
         return sortedPlayers;
     }
 
-    return sortedPlayers.map(async player => {
-        if (player._id) {
-            player.name = await Discord.getMemberNickname(guild, player._id, player.name);
-        }
+    return Promise.all(
+        sortedPlayers.map(async player => {
+            if (player._id) {
+                player.name = await getMemberNickname(guild, player._id, player.name);
+            }
 
-        return player;
-    });
+            return player;
+        })
+    );
 };
 
-export const getScoreBoard = async ({ guild }: DiscordCommandInteraction) => {
+export const getScoreBoard = async ({ guild }: CommandInteraction) => {
     try {
         const ranking = await getRanking(guild);
         const scoreBoard: string[] = [];
@@ -38,12 +46,14 @@ export const getScoreBoard = async ({ guild }: DiscordCommandInteraction) => {
 
         const champion = scoreBoard.shift();
 
-        return Discord.buildEmbed({
-            description: Word.buildList(scoreBoard),
-            title: champion
-        });
+        return getEmbedObject([
+            {
+                description: buildList(scoreBoard),
+                title: champion
+            }
+        ]);
     } catch (error) {
-        Log.error(error, 'getScoreBoard');
+        logError(error, 'getScoreBoard');
         throw error;
     }
 };

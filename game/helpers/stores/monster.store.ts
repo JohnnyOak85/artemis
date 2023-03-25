@@ -1,15 +1,10 @@
-import { Collector } from '../../../commons';
-import { Battler } from './fighter.store';
-
-export interface Monster extends Battler {
-    description: string;
-    index: number;
-}
+import { Collector } from '../../../shared';
+import { Monster } from '../interfaces';
 
 const store = new Collector<Monster>();
 const key = 'monster';
 
-export default {
+export const MonsterStore = {
     getMonster: () => store.get(key),
     putMonster: (monster: Monster) => store.put(key, monster),
     deleteMonster: () => store.delete(key)

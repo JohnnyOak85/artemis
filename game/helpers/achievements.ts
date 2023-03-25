@@ -1,9 +1,7 @@
-import { Api } from '../../commons/tools';
-import { Player } from './player';
-import stats from './stats';
-import { Monster } from './stores/monster.store';
+import { Monster, Player } from './interfaces';
+import { getStatCaps } from './stats';
 
-const getData = <T>(url: string) => Api.get<T>(`game/areas/${url}`);
+const getData = <T>(url: string) => getData<T>(`game/areas/${url}`);
 
 export const checkBoss = ({ achievements }: Player, { index, description }: Monster) => {
     if (index < 3) return '';
@@ -42,7 +40,7 @@ export const checkMonster = async ({ achievements, bestiary }: Player, { id }: M
 
 export const checkStats = async ({ achievements, attack, defense, health, luck }: Player) => {
     const achievement = 'Maxed all stats';
-    const { healthCap, luckCap, statCap } = await stats.getStatCaps();
+    const { healthCap, luckCap, statCap } = await getStatCaps();
 
     if (
         attack + defense >= statCap &&

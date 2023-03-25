@@ -1,21 +1,5 @@
-import { Collector } from '../../../commons';
-import { Player } from '../player';
-import { Monster } from './monster.store';
-
-export interface Fighter extends Monster, Player {}
-
-export interface Battler {
-    attack: number;
-    boost?: number;
-    damage?: number;
-    defense: number;
-    health: number;
-    id: string;
-    level: number;
-    luck: number;
-    originalHealth?: number;
-    type?: string;
-}
+import { Collector } from '../../../shared';
+import { Fighter, Monster, Player } from '../interfaces';
 
 const fighterStore = new Collector<Fighter>();
 const winnerStore = new Collector<Player>();
@@ -24,7 +8,7 @@ const loserStore = new Collector<Player>();
 const winnerKey = 'winner';
 const loserKey = 'loser';
 
-export default {
+export const FighterStore = {
     getFighter: (id: string) => ({ ...fighterStore.get(id) } as Fighter),
     getLoser: () => loserStore.get(loserKey),
     getWinner: () => winnerStore.get(winnerKey),

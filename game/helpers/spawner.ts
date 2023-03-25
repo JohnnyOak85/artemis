@@ -1,8 +1,14 @@
-import { Dictionary } from '../../commons';
-import Discord from '../../commons/discord';
-import { Api, Environment, Gamble, Log } from '../../commons/tools';
-import monsterStore from './stores//monster.store';
-import stats from './stats';
+import {
+    Dictionary,
+    getData,
+    getEmbedObject,
+    getVariables,
+    logError,
+    random,
+    randomIndex
+} from '../../shared';
+import { calcHealth, calcLevel, calcLuck, calcStats } from './stats';
+import { MonsterStore } from './stores';
 
 type Area = Dictionary<string>[];
 
@@ -13,63 +19,61 @@ type RankData = {
     title: string;
 };
 
-const getData = async <T>(url: string) => Api.get<T>(`game/${url}`);
-
 const getRankInfo = async () => {
     try {
-        const ranks = await getData<RankData[]>('ranks');
+        const ranks = await getData<RankData[]>('game/ranks');
         let rank: RankData | undefined;
 
         while (!rank) {
-            const randomChance = Gamble.random();
+            const randomChance = random();
             rank = ranks.find(({ chance }) => randomChance <= chance);
         }
 
         return rank;
     } catch (error) {
-        Log.error(error, 'getRank');
+        logError(error, 'getRank');
         throw error;
     }
 };
 
 const getMonsterInfo = async (rank: number) => {
     try {
-        const area = await getData<Area>('areas/data');
+        const area = await getData<Area>('game/areas/data');
         const rankMonsters = area[rank];
         const monsterList = Object.keys(rankMonsters);
-        const monster = monsterList[Gamble.randomIndex(monsterList)];
+        const monster = monsterList[randomIndex(monsterList)];
 
         return {
             id: monster,
             description: rankMonsters[monster]
         };
     } catch (error) {
-        Log.error(error, 'getMonsterInfo');
+        logError(error, 'getMonsterInfo');
         throw error;
     }
 };
 
 const getMonsterStats = async (rank: number) => {
-    const level = await stats.calcLevel(rank);
-    const { attack, defense } = await stats.calcStats(level);
+    const level = await calcLevel(rank);
+    const { attack, defense } = await calcStats(level);
 
     return {
         attack,
         defense,
-        health: await stats.calcHealth(level),
+        health: await calcHealth(level),
         level,
-        luck: await stats.calcLuck(level)
+        luck: await calcLuck(level)
     };
 };
 
-export default async () => {
+export const spawnMonster = async () => {
     try {
         const { color, index, title } = await getRankInfo();
         const { id, description } = await getMonsterInfo(index);
         const { attack, defense, health, level, luck } = await getMonsterStats(index + 1);
-        const { monsterApi } = Environment.get();
+        const { monsterApi } = getVariables();
 
-        monsterStore.putMonster({
+        MonsterStore.putMonster({
             attack,
             defense,
             description,
@@ -80,14 +84,16 @@ export default async () => {
             luck
         });
 
-        return Discord.buildEmbed({
-            color: Number(color),
-            description: `A level ${level} ${description} appears!`,
-            thumbnail: `${monsterApi}/${id}.png`,
-            title
-        });
+        return getEmbedObject([
+            {
+                color: Number(color),
+                description: `A level ${level} ${description} appears!`,
+                thumbnail: `${monsterApi}/${id}.png`,
+                title
+            }
+        ]);
     } catch (error) {
-        Log.error(error, 'spawner');
+        logError(error, 'spawner');
         throw error;
     }
 };

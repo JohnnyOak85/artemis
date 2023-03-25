@@ -1,9 +1,9 @@
-import { Collector } from '../../../commons';
+import { Collector } from '../../../shared';
 
 const store = new Collector<boolean>();
 const key = 'running';
 
-export default {
+export const ToggleStore = {
     toggle: () => {
         store.put(key, !store.get(key));
     },

@@ -1,4 +1,4 @@
-import Discord from '../../../commons/discord';
+import { buildButton } from '../../../shared';
 
 const achievementsButton = {
     emoji: '👑',
@@ -18,8 +18,6 @@ const statsButton = {
     label: 'Stats'
 };
 
-export default {
-    achievements: () => Discord.buildButton(achievementsButton),
-    bestiary: () => Discord.buildButton(bestiaryButton),
-    stats: () => Discord.buildButton(statsButton)
-};
+export const getAchievementsButton = () => buildButton(achievementsButton);
+export const getBestiaryButton = () => buildButton(bestiaryButton);
+export const getStatsButton = () => buildButton(statsButton);

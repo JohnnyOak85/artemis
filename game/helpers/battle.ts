@@ -1,12 +1,9 @@
-import { DiscordChannel } from '../../commons/discord';
-import { Gamble, Log } from '../../commons/tools';
+import { logError, TextChannel, tossCoin } from '../../shared';
 import battleCalculator from './battle.calculator';
-import { getPlayer, PlayerData, savePlayer } from './player';
-import fighterStore, { Fighter } from './stores/fighter.store';
-import gameStore from './stores/game.store';
-import messageStore from './stores/message.store';
-import monsterStore, { Monster } from './stores/monster.store';
-import getBuffs from './buffs';
+import { getBuffs } from './buffs';
+import { Fighter, Monster, PlayerData } from './interfaces';
+import { getPlayer, savePlayer } from './player';
+import { FighterStore, GameStore, MessageStore, MonsterStore } from './stores';
 
 const checkAttack = (attacker: Fighter, defender: Fighter, summary: string[]) => {
     if (!attacker.boost) {
@@ -23,7 +20,7 @@ const checkAttack = (attacker: Fighter, defender: Fighter, summary: string[]) =>
 };
 
 const checkDefense = async (attacker: Fighter, defender: Fighter, summary: string[]) => {
-    const willCounter = (await battleCalculator.calcLuck(defender.luck)) && Gamble.tossCoin();
+    const willCounter = (await battleCalculator.calcLuck(defender.luck)) && tossCoin();
     const willFollow = attacker.boost && (await battleCalculator.calcLuck(attacker.luck));
 
     if (willCounter) {
@@ -57,9 +54,9 @@ const playRound = async (attacker: Fighter, defender: Fighter) => {
     return checkDefense(attacker, defender, summary);
 };
 
-const endBattle = async (monster: Monster, channel: DiscordChannel) => {
-    const loser = fighterStore.getLoser();
-    const winner = fighterStore.getWinner();
+const endBattle = async (monster: Monster, channel: TextChannel) => {
+    const loser = FighterStore.getLoser();
+    const winner = FighterStore.getWinner();
 
     if (winner) {
         winner.wins++;
@@ -71,9 +68,9 @@ const endBattle = async (monster: Monster, channel: DiscordChannel) => {
     }
 };
 
-export const startRounds = async (playerId: string, monsterId: string, channel: DiscordChannel) => {
-    let attacker = fighterStore.getFighter(playerId);
-    let defender = fighterStore.getFighter(monsterId);
+export const startRounds = async (playerId: string, monsterId: string, channel: TextChannel) => {
+    let attacker = FighterStore.getFighter(playerId);
+    let defender = FighterStore.getFighter(monsterId);
     let finished = false;
 
     while (!finished) {
@@ -82,33 +79,33 @@ export const startRounds = async (playerId: string, monsterId: string, channel: 
         attacker = winner;
         defender = loser;
 
-        fighterStore.storeLoser(loser);
-        fighterStore.storeWinner(winner);
+        FighterStore.storeLoser(loser);
+        FighterStore.storeWinner(winner);
 
         channel.send(summary);
 
         finished = loser.health <= 0;
     }
 
-    monsterStore.deleteMonster();
-    gameStore.restart();
+    MonsterStore.deleteMonster();
+    GameStore.restart();
 };
 
-export const engageBattle = async (playerData: PlayerData, channel: DiscordChannel) => {
+export const engageBattle = async (playerData: PlayerData, channel: TextChannel) => {
     try {
-        const monster = monsterStore.getMonster();
+        const monster = MonsterStore.getMonster();
         const player = await getPlayer(playerData);
 
         if (!monster) return;
 
-        gameStore.stop();
-        messageStore.deleteMessage();
+        GameStore.stop();
+        MessageStore.deleteMessage();
 
-        fighterStore.storeFighter({
+        FighterStore.storeFighter({
             ...monster,
             ...{ name: monster.description, originalHealth: monster.health, type: 'monster' }
         });
-        fighterStore.storeFighter({
+        FighterStore.storeFighter({
             ...player,
             ...{ originalHealth: player.health, type: 'player' }
         });
@@ -117,9 +114,9 @@ export const engageBattle = async (playerData: PlayerData, channel: DiscordChann
 
         await endBattle(monster, channel);
 
-        gameStore.restart();
+        GameStore.restart();
     } catch (error) {
-        Log.error(error, 'engageBattle');
+        logError(error, 'engageBattle');
         throw error;
     }
 };
