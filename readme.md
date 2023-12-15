@@ -67,7 +67,7 @@ Reminders can be of three types:
 Every time a message is sent in the guild, it will scan it and choose an action to take.
 
 -   Greeting: If the message contains a mention to Artemis and it has yet to respond with something else, it will reply with a random greeting.
--   Prediction: If the message ends with a question mark and Artemis was mentioned it will reply with an [Magic 8 Ball](https://magic-8ball.com/) style response. If it wasn't mentioned, there is still a one in three chance it will respond.
+-   Prediction: If the message ends with a question mark and Artemis was mentioned it will reply with an [Magic 8 Ball](https://magic8balls.org/) style response. If it wasn't mentioned, there is still a one in three chance it will respond.
 -   Reaction: If the message contains a certain trigger word from a stored list, there is a one in three chance it will react to the message.
 -   Response: If the message contains a certain trigger word from a stored list, there is a one in three chance it will respond to the message, but only if it hasn't sent a prediction before.
 
