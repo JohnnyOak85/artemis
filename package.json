@@ -1,0 +1,19 @@
+{
+  "name": "artemis",
+  "version": "1.0.0",
+  "description": "Artemis is designed to resemble an average human with an androgynous appearance, striking a balance between simplicity and subtle complexity. Standing at about 5'7\" (170 cm) with a neutral, approachable build, Artemis's pale, porcelain-like skin and striking blue hair contribute to its ethereal yet grounded look. The blue eyes and minimalist blue shirt complete the cohesive color scheme. Its androgynous features are balanced and welcoming, while the subtle digital gleam in its eyes hints at its AI nature. Artemis moves smoothly and naturally, mimicking human fluidity despite being an AI.",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/start.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
