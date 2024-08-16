@@ -9,7 +9,7 @@ const command = {
     description: "Sends a random quote",
   }),
   execute: async (interaction: CommandInteraction) => {
-    const quotes = fetchDocument<string[]>("fixes");
+    const quotes = fetchDocument<string[]>("quotes");
 
     if (!quotes) {
       return;
