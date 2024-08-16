@@ -36,12 +36,3 @@ If a message contains a certain trigger word from a stored list, there is a one 
 ## ~~Game (Tales of Murwelgrave)~~(Not ported yet)
 
 ~~An RPG style game where the player gets to engage randomly generated monsters. As they do, a battle will ensue, if they win their stats will go up and will be stored into the database. There are also achievements to be gained.~~
-
-### Reminder
-
-Every day at noon, it calls the database to check for new reminders. If there are any new ones, it starts a job to send an embed with the reminder at the stipulated time.
-Reminders can be of three types:
-
-- Birthday: Self explanatory.
-- Celebration: A special date to be celebrated.
-- Release: The release date for a game or movie.
